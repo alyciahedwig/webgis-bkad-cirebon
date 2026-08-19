@@ -64,22 +64,12 @@
         "webgis_restore_radius_analysis"
     );
 
+/* ======================================================
+   DATA GEOJSON PUBLIK
+   ====================================================== */
 
-
-    /* ======================================================
-       WFS
-       ====================================================== */
-
-    const WFS_URL =
-        "http://localhost:8080/geoserver/bkad_cirebon/ows" +
-        "?service=WFS" +
-        "&version=2.0.0" +
-        "&request=GetFeature" +
-        "&typeNames=bkad_cirebon:aset_pemda" +
-        "&outputFormat=application/json" +
-        "&srsName=EPSG:4326" +
-        "&count=5000";
-
+const DATA_URL =
+    "/data/aset_pemda.geojson";
 
 
     /* ======================================================
@@ -2857,7 +2847,7 @@
 
             const response =
                 await fetch(
-                    WFS_URL,
+                    DATA_URL,
                     {
                         cache:
                             "no-store"
@@ -2868,7 +2858,7 @@
             if (!response.ok) {
 
                 throw new Error(
-                    `GeoServer merespons ${response.status}.`
+                    `Data aset merespons ${response.status}.`
                 );
 
             }
