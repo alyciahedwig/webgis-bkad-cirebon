@@ -773,29 +773,13 @@ map.on(
 );
 
 
-
 /* ======================================================
-   WFS
+   DATA GEOJSON PUBLIK
    ====================================================== */
 
-const wfsUrl =
+const dataUrl =
 
-    "http://localhost:8080/geoserver/bkad_cirebon/ows" +
-
-    "?service=WFS" +
-
-    "&version=2.0.0" +
-
-    "&request=GetFeature" +
-
-    "&typeNames=bkad_cirebon:aset_pemda" +
-
-    "&outputFormat=application/json" +
-
-    "&srsName=EPSG:4326" +
-
-    "&count=100000";
-
+    "/data/aset_pemda.geojson";
 
 
 /* ======================================================
@@ -4831,7 +4815,7 @@ map.on(
    ====================================================== */
 
 fetch(
-    wfsUrl
+    dataUrl
 )
 
     .then(
