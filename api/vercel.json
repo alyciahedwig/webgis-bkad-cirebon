@@ -1,0 +1,20 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/api/login.php",
+      "destination": "/api/auth?action=login",
+      "permanent": false
+    },
+    {
+      "source": "/api/session.php",
+      "destination": "/api/auth?action=session",
+      "permanent": false
+    },
+    {
+      "source": "/api/logout.php",
+      "destination": "/api/auth?action=logout",
+      "permanent": false
+    }
+  ]
+}
