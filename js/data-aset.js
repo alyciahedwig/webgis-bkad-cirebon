@@ -439,31 +439,12 @@
 
     }
 
-
-
     /* ======================================================
-       WFS
-       ====================================================== */
+   DATA GEOJSON PUBLIK
+   ====================================================== */
 
-    const WFS_BASE =
-        "http://localhost:8080/geoserver/bkad_cirebon/ows";
-
-
-    /*
-       Tabel hanya mengambil ATRIBUT.
-       Tidak mengambil 1.541 geometri polygon.
-    */
-
-    const TABLE_URL =
-        WFS_BASE +
-        "?service=WFS" +
-        "&version=2.0.0" +
-        "&request=GetFeature" +
-        "&typeNames=bkad_cirebon:aset_pemda" +
-        "&outputFormat=application/json" +
-        "&propertyName=id_barang,penggunaan,nub,luas_m2,kecamatan,desa,status,keterangan" +
-        "&count=5000";
-
+const DATA_URL =
+    "/data/aset_pemda.geojson";
 
 
     /* ======================================================
@@ -1909,113 +1890,63 @@
 
 
     /* ======================================================
-       GET SATU GEOMETRY UNTUK PDF
-       ====================================================== */
+   GET SATU GEOMETRY UNTUK PDF
+   GEOJSON PUBLIK SUDAH MEMUAT GEOMETRI
+   ====================================================== */
 
-    async function fetchGeometryForFeature(
-        feature
+async function fetchGeometryForFeature(
+    feature
+) {
+
+    if (
+        feature &&
+        feature.geometry
     ) {
 
-        const p =
-            feature.properties || {};
-
-
-        let cql =
-            "";
-
-
-        if (
-            !isMissing(p.id_barang) &&
-            !isMissing(p.nub)
-        ) {
-
-            cql =
-                `id_barang='${cqlEscape(p.id_barang)}' ` +
-                `AND nub='${cqlEscape(p.nub)}'`;
-
-        }
-
-        else if (
-            !isMissing(p.id_barang)
-        ) {
-
-            cql =
-                `id_barang='${cqlEscape(p.id_barang)}'`;
-
-        }
-
-        else if (
-            !isMissing(p.nub)
-        ) {
-
-            cql =
-                `nub='${cqlEscape(p.nub)}'`;
-
-        }
-
-        else {
-
-            throw new Error(
-                "ID bidang tidak tersedia."
-            );
-
-        }
-
-
-        const url =
-            WFS_BASE +
-            "?service=WFS" +
-            "&version=2.0.0" +
-            "&request=GetFeature" +
-            "&typeNames=bkad_cirebon:aset_pemda" +
-            "&outputFormat=application/json" +
-            "&srsName=EPSG:4326" +
-            "&count=1" +
-            "&CQL_FILTER=" +
-            encodeURIComponent(cql);
-
-
-        const response =
-            await fetch(
-                url,
-                {
-                    cache:
-                        "no-store"
-                }
-            );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                "Gagal mengambil geometri bidang."
-            );
-
-        }
-
-
-        const data =
-            await response.json();
-
-
-        if (
-            !Array.isArray(data.features) ||
-            !data.features.length ||
-            !data.features[0].geometry
-        ) {
-
-            throw new Error(
-                "Geometri bidang tidak ditemukan."
-            );
-
-        }
-
-
-        return data.features[0];
+        return feature;
 
     }
 
 
+    const properties =
+        feature?.properties || {};
+
+
+    const matchedFeature =
+        allFeatures.find(
+            item => {
+
+                const p =
+                    item?.properties || {};
+
+
+                return (
+                    normalize(p.id_barang) ===
+                        normalize(properties.id_barang) &&
+
+                    normalize(p.nub) ===
+                        normalize(properties.nub)
+                );
+
+            }
+        );
+
+
+    if (
+        !matchedFeature ||
+        !matchedFeature.geometry
+    ) {
+
+        throw new Error(
+            "Geometri bidang tidak ditemukan."
+        );
+
+    }
+
+
+    return matchedFeature;
+
+}
 
     /* ======================================================
        GEOMETRY → CANVAS
@@ -3249,7 +3180,7 @@
 
             const response =
                 await fetch(
-                    TABLE_URL,
+                    DATA_URL,
                     {
                         cache:
                             "no-store"
@@ -3260,7 +3191,7 @@
             if (!response.ok) {
 
                 throw new Error(
-                    `GeoServer merespons ${response.status}.`
+                    `Data aset merespons ${response.status}.`
                 );
 
             }
