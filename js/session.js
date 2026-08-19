@@ -1,6 +1,7 @@
 /* =========================================================
    WEBGIS BKAD KABUPATEN CIREBON
    SESSION / ROLE MANAGEMENT
+   VERCEL VERSION
    ========================================================= */
 
 const WEBGIS_ROLE_KEY =
@@ -11,20 +12,28 @@ const WEBGIS_ADMIN_HINT =
 
 
 /* =========================================================
+   API ENDPOINT
+   ========================================================= */
+
+const WEBGIS_AUTH_API =
+    "/api/auth";
+
+
+/* =========================================================
    MASUK SEBAGAI GUEST
    ========================================================= */
 
 async function enterAsGuest() {
 
     /*
-       Kalau sebelumnya ada session Admin di server,
-       kita tutup dulu agar Guest benar-benar Guest.
+       Kalau sebelumnya ada session Admin online,
+       bersihkan terlebih dahulu.
     */
 
     try {
 
         await fetch(
-            "api/logout.php",
+            `${WEBGIS_AUTH_API}?action=logout`,
             {
                 method: "POST",
                 credentials: "same-origin",
@@ -37,7 +46,7 @@ async function enterAsGuest() {
     catch (error) {
 
         console.warn(
-            "Session server tidak dapat dibersihkan:",
+            "Session Admin tidak dapat dibersihkan:",
             error
         );
 
@@ -61,7 +70,6 @@ async function enterAsGuest() {
 }
 
 
-
 /* =========================================================
    GET ROLE
    ========================================================= */
@@ -82,10 +90,11 @@ function getUserRole() {
 
 
     /*
-       Hint hanya membantu ketika Admin membuka tab baru.
+       Membantu mempertahankan tampilan Admin
+       ketika membuka tab baru.
 
-       Ini BUKAN pengaman utama.
-       Otorisasi Admin tetap ditentukan PHP Session.
+       Validasi sebenarnya tetap dilakukan
+       ke Vercel Function.
     */
 
     if (
@@ -104,10 +113,8 @@ function getUserRole() {
 }
 
 
-
 /* =========================================================
    SET ADMIN ROLE
-   Dipanggil setelah PHP berhasil login
    ========================================================= */
 
 function setAdminRole() {
@@ -126,9 +133,8 @@ function setAdminRole() {
 }
 
 
-
 /* =========================================================
-   CEK SESSION ADMIN KE SERVER
+   CEK SESSION ADMIN KE VERCEL
    ========================================================= */
 
 async function verifyAdminSession() {
@@ -137,11 +143,15 @@ async function verifyAdminSession() {
 
         const response =
             await fetch(
-                "api/session.php",
+                `${WEBGIS_AUTH_API}?action=session`,
                 {
                     method: "GET",
                     credentials: "same-origin",
-                    cache: "no-store"
+                    cache: "no-store",
+                    headers: {
+                        "Accept":
+                            "application/json"
+                    }
                 }
             );
 
@@ -160,6 +170,7 @@ async function verifyAdminSession() {
 
 
         if (
+            result.success === true &&
             result.authenticated === true &&
             result.role === "admin"
         ) {
@@ -195,12 +206,13 @@ async function verifyAdminSession() {
         );
 
 
+        clearAdminRole();
+
         return false;
 
     }
 
 }
-
 
 
 /* =========================================================
@@ -209,17 +221,9 @@ async function verifyAdminSession() {
 
 function clearAdminRole() {
 
-    if (
-        sessionStorage.getItem(
-            WEBGIS_ROLE_KEY
-        ) === "admin"
-    ) {
-
-        sessionStorage.removeItem(
-            WEBGIS_ROLE_KEY
-        );
-
-    }
+    sessionStorage.removeItem(
+        WEBGIS_ROLE_KEY
+    );
 
 
     localStorage.removeItem(
@@ -227,7 +231,6 @@ function clearAdminRole() {
     );
 
 }
-
 
 
 /* =========================================================
@@ -239,11 +242,15 @@ async function logoutWebGIS() {
     try {
 
         await fetch(
-            "api/logout.php",
+            `${WEBGIS_AUTH_API}?action=logout`,
             {
                 method: "POST",
                 credentials: "same-origin",
-                cache: "no-store"
+                cache: "no-store",
+                headers: {
+                    "Accept":
+                        "application/json"
+                }
             }
         );
 
@@ -278,12 +285,8 @@ async function logoutWebGIS() {
 }
 
 
-
 /* =========================================================
    VERIFIKASI OTOMATIS ADMIN
-
-   UI boleh membaca role dari browser,
-   tetapi PHP tetap menjadi otoritas utama.
    ========================================================= */
 
 document.addEventListener(
@@ -300,9 +303,9 @@ document.addEventListener(
                     valid => {
 
                         /*
-                           Kalau role browser mengatakan Admin
-                           tetapi PHP session sudah mati,
-                           jangan biarkan Admin palsu bertahan.
+                           Kalau browser menyimpan role Admin
+                           tetapi session server sudah tidak valid,
+                           baru kembali ke landing page.
                         */
 
                         if (!valid) {
@@ -332,7 +335,6 @@ document.addEventListener(
 
     }
 );
-
 
 
 /* =========================================================
