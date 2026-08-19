@@ -246,7 +246,7 @@
 
                 const response =
                     await fetch(
-                        "api/login.php",
+                        "/api/auth?action=login",
                         {
                             method:
                                 "POST",
