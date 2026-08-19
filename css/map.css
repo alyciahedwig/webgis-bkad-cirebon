@@ -1777,3 +1777,164 @@ body {
     }
 
 }
+
+/* ======================================================
+   MOBILE NAVIGATION FIX
+   ====================================================== */
+
+@media (max-width: 850px) {
+
+    .app-navbar {
+        min-height: 70px;
+        height: auto;
+
+        display: flex;
+        flex-wrap: wrap;
+
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 8px;
+
+        padding:
+            10px 16px 0;
+    }
+
+
+    .app-brand {
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+
+
+    .brand-info {
+        display: none;
+    }
+
+
+    .app-brand img {
+        width: 40px;
+        height: 40px;
+    }
+
+
+    .user-area {
+        flex: 0 0 auto;
+    }
+
+
+    .app-menu {
+        order: 3;
+
+        width: calc(100% + 32px);
+
+        margin:
+            0 -16px;
+
+        padding:
+            0 16px;
+
+        display: flex !important;
+
+        align-items: center;
+        justify-content: flex-start;
+
+        gap: 22px;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        white-space: nowrap;
+
+        border-top:
+            1px solid #e4e7ec;
+
+        background:
+            #ffffff;
+
+        -webkit-overflow-scrolling:
+            touch;
+
+        scrollbar-width:
+            none;
+    }
+
+
+    .app-menu::-webkit-scrollbar {
+        display: none;
+    }
+
+
+    .app-menu a {
+        flex:
+            0 0 auto;
+
+        padding:
+            14px 0 12px;
+
+        font-size:
+            11px;
+    }
+
+
+    .app-menu a.active::after {
+        bottom: 6px;
+    }
+
+}
+
+
+/* ======================================================
+   SMALL MOBILE
+   ====================================================== */
+
+@media (max-width: 480px) {
+
+    .app-navbar {
+        padding:
+            8px 12px 0;
+    }
+
+
+    .app-menu {
+        width:
+            calc(100% + 24px);
+
+        margin:
+            0 -12px;
+
+        padding:
+            0 12px;
+
+        gap:
+            20px;
+    }
+
+
+    .app-menu a {
+        font-size:
+            10px;
+
+        padding:
+            13px 0 11px;
+    }
+
+
+    .role-badge {
+        font-size:
+            9px;
+    }
+
+
+    .logout-button {
+        min-height:
+            34px;
+
+        padding:
+            0 10px;
+
+        font-size:
+            9px;
+    }
+
+}
