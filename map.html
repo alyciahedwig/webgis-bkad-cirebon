@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Peta - WebGIS BKAD Kabupaten Cirebon
+    </title>
+
+
+    <!-- FONT -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- LEAFLET CSS -->
+
+    <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+>
+
+    <!-- MAP CSS -->
+
+    <link
+        rel="stylesheet"
+        href="css/map.css"
+    >
+
+    <link
+    rel="stylesheet"
+    href="css/footer.css?v=1"
+>
+
+</head>
+
+
+<body>
+
+
+<div class="map-page">
+
+
+    <!-- ==================================================
+         NAVBAR
+         ================================================== -->
+
+    <header class="app-navbar">
+
+
+        <a
+            href="beranda.html"
+            class="app-brand"
+        >
+
+            <img
+                src="assets/img/logokabcirebon.jpg"
+                alt="Logo Kabupaten Cirebon"
+            >
+
+            <div class="brand-info">
+
+                <strong>
+                    BKAD Kabupaten Cirebon
+                </strong>
+
+                <span>
+                    Basis Data Spasial Tanah Aset
+                </span>
+
+            </div>
+
+        </a>
+
+
+
+        <nav class="app-menu">
+
+            <a href="beranda.html">
+                Beranda
+            </a>
+
+            <a
+                href="map.html"
+                class="active"
+            >
+                Peta
+            </a>
+
+            <a href="data-aset.html">
+    Data Aset
+</a>
+
+            <a href="alat.html">
+    Alat
+</a>
+
+            <a href="tentang.html">
+    Tentang
+</a>
+
+        </nav>
+
+
+
+        <div class="user-area">
+
+            <span
+                class="role-badge"
+                id="roleBadge"
+            >
+                Guest
+            </span>
+
+            <button
+                type="button"
+                class="logout-button"
+                onclick="logoutWebGIS()"
+            >
+                Keluar
+            </button>
+
+        </div>
+
+
+    </header>
+
+
+
+    <!-- ==================================================
+         MAP AREA
+         ================================================== -->
+
+    <main class="map-shell">
+
+
+        <div id="map"></div>
+
+
+
+        <!-- ==================================================
+             SEARCH
+             ================================================== -->
+
+        <section
+            class="search-control"
+            id="searchControl"
+        >
+
+            <button
+                type="button"
+                class="search-toggle-button"
+                id="searchToggleButton"
+                aria-label="Cari aset"
+                aria-expanded="false"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+
+                    <circle
+                        cx="11"
+                        cy="11"
+                        r="6.5"
+                    ></circle>
+
+                    <path
+                        d="M16 16L21 21"
+                    ></path>
+
+                </svg>
+
+            </button>
+
+
+
+            <div
+                class="search-panel"
+                id="searchPanel"
+            >
+
+                <div class="search-panel-header">
+
+                    <h2>
+                        Cari Aset
+                    </h2>
+
+                    <button
+                        type="button"
+                        class="search-close-button"
+                        id="searchCloseButton"
+                        aria-label="Tutup pencarian"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <form
+                    id="assetSearchForm"
+                    autocomplete="off"
+                >
+
+                    <div class="search-field">
+
+                        <label for="searchNib">
+                            NIB / ID Barang
+                        </label>
+
+                        <input
+                            type="text"
+                            id="searchNib"
+                            placeholder="Masukkan nomor"
+                        >
+
+                    </div>
+
+
+
+                    <div class="search-field">
+
+                        <label for="searchKecamatan">
+                            Kecamatan
+                        </label>
+
+                        <select id="searchKecamatan">
+
+                            <option value="">
+                                Semua Kecamatan
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div class="search-field">
+
+                        <label for="searchPenggunaan">
+                            Penggunaan
+                        </label>
+
+                        <select id="searchPenggunaan">
+
+                            <option value="">
+                                Semua Penggunaan
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div class="search-actions">
+
+                        <button
+                            type="submit"
+                            class="search-submit-button"
+                        >
+                            Cari
+                        </button>
+
+                        <button
+                            type="button"
+                            class="search-reset-button"
+                            id="searchResetButton"
+                        >
+                            Reset
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        class="search-result-info"
+                        id="searchResultInfo"
+                        aria-live="polite"
+                    >
+                        —
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             PANEL KANAN
+             ================================================== -->
+
+        <div
+            class="map-right-stack"
+            id="mapRightStack"
+        >
+
+
+            <!-- TAMPILAN PETA -->
+
+            <section
+                class="map-style-panel"
+                id="mapStylePanel"
+            >
+
+                <span class="map-style-title">
+                    Tampilan Peta
+                </span>
+
+
+                <div
+                    class="map-style-options"
+                    role="group"
+                    aria-label="Pilih tampilan peta"
+                >
+
+                    <button
+                        type="button"
+                        class="map-style-button active"
+                        data-mode="penggunaan"
+                    >
+                        Penggunaan
+                    </button>
+
+                    <button
+                        type="button"
+                        class="map-style-button"
+                        data-mode="status"
+                    >
+                        Status
+                    </button>
+
+                    <button
+                        type="button"
+                        class="map-style-button"
+                        data-mode="kelengkapan"
+                    >
+                        Kelengkapan
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- LEGENDA -->
+
+            <aside
+                class="map-legend-panel"
+                id="mapLegend"
+            >
+
+                <button
+                    type="button"
+                    class="legend-toggle"
+                    id="legendToggle"
+                    aria-expanded="false"
+                >
+
+                    <span id="legendTitle">
+                        Legenda Penggunaan
+                    </span>
+
+                    <span
+                        class="legend-toggle-icon"
+                        id="legendToggleIcon"
+                    >
+                        +
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="legend-content"
+                    id="legendContent"
+                >
+
+                    <div
+                        class="legend-items"
+                        id="legendItems"
+                    ></div>
+
+                </div>
+
+            </aside>
+
+
+
+            <!-- FILTER DARI DASHBOARD -->
+
+            <aside
+                class="map-info-panel"
+                id="mapInfoPanel"
+            >
+
+                <h2 id="mapInfoTitle">
+                    Data Lengkap
+                </h2>
+
+                <strong
+                    class="map-info-count"
+                    id="mapInfoCount"
+                >
+                    —
+                </strong>
+
+                <p
+                    class="map-info-description"
+                    id="mapInfoDescription"
+                ></p>
+
+                <button
+                    type="button"
+                    class="view-data-button"
+                    id="viewFilteredData"
+                >
+                    Tampilkan Data Aset
+                </button>
+
+            </aside>
+
+
+
+            <!-- DETAIL ASET -->
+
+            <aside
+                class="asset-detail-panel"
+                id="assetDetailPanel"
+            >
+
+                <div class="asset-detail-header">
+
+                    <div>
+
+                        <span class="asset-detail-eyebrow">
+                            DETAIL ASET
+                        </span>
+
+                        <h2 id="detailUsage">
+                            —
+                        </h2>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="asset-detail-close"
+                        id="assetDetailClose"
+                        aria-label="Tutup detail aset"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="asset-detail-content"
+                    id="assetDetailContent"
+                ></div>
+
+            </aside>
+
+
+        </div>
+
+
+
+        <!-- ==================================================
+             KOORDINAT
+             ================================================== -->
+
+        <div class="coordinate-box">
+
+            <strong>
+                Koordinat
+            </strong>
+
+            <span class="coordinate-separator">
+                ·
+            </span>
+
+            <span id="coordinateValue">
+                Klik lokasi pada peta
+            </span>
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- LEAFLET JS -->
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- SESSION -->
+
+<script src="js/session.js"></script>
+
+
+<!-- MAP -->
+
+<script src="js/map.js"></script>
+
+<footer class="site-footer">
+
+    <div class="site-footer-inner">
+
+        <span class="footer-left">
+            © 2026 BKAD Kabupaten Cirebon
+        </span>
+
+        <span class="footer-right">
+            Rame ing gawe, sepi ing pamrih
+        </span>
+
+    </div>
+
+</footer>
+
+</body>
+
+</html>

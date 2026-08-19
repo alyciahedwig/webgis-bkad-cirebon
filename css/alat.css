@@ -1,0 +1,2088 @@
+/* =========================================================
+   WEBGIS BKAD KABUPATEN CIREBON
+   HALAMAN ALAT ANALISIS
+   ========================================================= */
+
+
+/* =========================================================
+   ROOT
+   ========================================================= */
+
+:root {
+    --navy: #0f2747;
+    --navy-2: #17385f;
+
+    --teal: #1c9ba4;
+    --orange: #e08a32;
+
+    --background: #f5f7fa;
+    --surface: #ffffff;
+
+    --text: #172033;
+    --muted: #667085;
+    --soft: #98a2b3;
+
+    --border: #e4e7ec;
+
+    --success: #168a62;
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+html {
+    width: 100%;
+    min-height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    overflow-x: hidden;
+}
+
+
+body {
+    width: 100%;
+    min-height: 100vh;
+
+    margin: 0;
+    padding: 0;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    font-family:
+        "Plus Jakarta Sans",
+        sans-serif;
+
+    background:
+        var(--background);
+
+    color:
+        var(--text);
+}
+
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+
+button {
+    cursor: pointer;
+}
+
+
+[hidden] {
+    display: none !important;
+}
+
+
+.tool-page {
+    width: 100%;
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.app-navbar {
+    width: 100%;
+    height: 78px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    padding:
+        0 6%;
+
+    position: sticky;
+    top: 0;
+
+    /*
+       HARUS lebih tinggi dari z-index Leaflet.
+       Ini yang mencegah tombol +/- dan Layers
+       menimpa navbar ketika halaman di-scroll.
+    */
+    z-index: 5000;
+
+    background:
+        rgba(255, 255, 255, 0.99);
+
+    border-bottom:
+        1px solid
+        var(--border);
+
+    box-shadow:
+        0 1px 0
+        rgba(15, 39, 71, 0.02);
+}
+
+
+.app-brand {
+    min-width: 220px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    text-decoration: none;
+}
+
+
+.app-brand img {
+    width: 45px;
+    height: 45px;
+
+    object-fit: contain;
+
+    mix-blend-mode: multiply;
+}
+
+
+.brand-info {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.brand-info strong {
+    color:
+        var(--navy);
+
+    font-size: 15px;
+    font-weight: 700;
+
+    letter-spacing: -0.3px;
+}
+
+
+.brand-info span {
+    margin-top: 2px;
+
+    color:
+        var(--muted);
+
+    font-size: 10px;
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.app-menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 30px;
+}
+
+
+.app-menu a {
+    position: relative;
+
+    padding:
+        29px 0 26px;
+
+    color:
+        var(--muted);
+
+    text-decoration: none;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    transition:
+        color 0.18s ease;
+}
+
+
+.app-menu a:hover {
+    color:
+        var(--navy);
+}
+
+
+.app-menu a.active {
+    color:
+        var(--navy);
+
+    font-weight: 700;
+}
+
+
+.app-menu a.active::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 18px;
+
+    height: 2px;
+
+    border-radius: 2px;
+
+    background:
+        var(--teal);
+}
+
+
+/* =========================================================
+   USER AREA
+   ========================================================= */
+
+.user-area {
+    min-width: 130px;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 12px;
+}
+
+
+.role-badge {
+    padding:
+        7px 11px;
+
+    border-radius: 20px;
+
+    background:
+        #eef3f8;
+
+    color:
+        var(--navy);
+
+    font-size: 10px;
+    font-weight: 700;
+
+    text-transform: capitalize;
+}
+
+
+.logout-button {
+    padding: 0;
+
+    border: 0;
+
+    background:
+        transparent;
+
+    color:
+        var(--muted);
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+.logout-button:hover {
+    color:
+        var(--navy);
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.tool-main {
+    width:
+        min(
+            1480px,
+            calc(100% - 70px)
+        );
+
+    margin:
+        0 auto;
+
+    padding:
+        42px 0 60px;
+
+    /*
+       JANGAN height:100vh
+       JANGAN overflow:hidden
+
+       Supaya page tetap bisa discroll.
+    */
+    height: auto;
+    min-height: 0;
+
+    overflow: visible;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.page-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    margin-bottom: 24px;
+}
+
+
+.eyebrow,
+.panel-kicker,
+.result-label {
+    display: block;
+
+    color:
+        var(--teal);
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 1.25px;
+}
+
+
+.page-head h1 {
+    margin:
+        7px 0 8px;
+
+    color:
+        var(--navy);
+
+    font-size: 34px;
+    line-height: 1.15;
+
+    font-weight: 800;
+
+    letter-spacing: -1.2px;
+}
+
+
+.page-head p {
+    max-width: 700px;
+
+    margin: 0;
+
+    color:
+        var(--muted);
+
+    font-size: 10px;
+    line-height: 1.7;
+}
+
+
+.page-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.data-status {
+    padding:
+        9px 11px;
+
+    border-radius: 20px;
+
+    background:
+        #edf4f4;
+
+    color:
+        #166c72;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.reset-all-button,
+.secondary-button,
+.primary-button {
+    min-height: 39px;
+
+    padding:
+        0 14px;
+
+    border-radius: 6px;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        color 0.18s ease;
+}
+
+
+.reset-all-button,
+.secondary-button {
+    border:
+        1px solid
+        var(--border);
+
+    background:
+        #ffffff;
+
+    color:
+        var(--navy);
+}
+
+
+.reset-all-button:hover,
+.secondary-button:hover {
+    background:
+        #f8fafc;
+
+    border-color:
+        #ccd5df;
+}
+
+
+.primary-button {
+    border:
+        1px solid
+        var(--navy);
+
+    background:
+        var(--navy);
+
+    color:
+        #ffffff;
+}
+
+
+.primary-button:hover {
+    background:
+        var(--navy-2);
+}
+
+
+/* =========================================================
+   ANALYSIS SHELL
+   ========================================================= */
+
+.analysis-shell {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        390px
+        minmax(0, 1fr);
+
+    /*
+       Tinggi panel tetap seperti desain awal.
+       Bukan dipaksa mengecil mengikuti viewport.
+    */
+    min-height: 680px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    z-index: 1;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 12px;
+
+    background:
+        var(--surface);
+
+    box-shadow:
+        0 10px 30px
+        rgba(15, 39, 71, 0.04);
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.tool-sidebar {
+    min-width: 0;
+    min-height: 680px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    z-index: 2;
+
+    border-right:
+        1px solid
+        var(--border);
+
+    background:
+        #ffffff;
+}
+
+
+/* =========================================================
+   TOOL TABS
+   ========================================================= */
+
+.tool-tabs {
+    padding: 14px;
+
+    border-bottom:
+        1px solid
+        var(--border);
+
+    background:
+        #fafbfc;
+}
+
+
+.tool-tab {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding:
+        12px 11px;
+
+    border:
+        1px solid
+        transparent;
+
+    border-radius: 8px;
+
+    background:
+        transparent;
+
+    text-align: left;
+
+    transition:
+        background 0.16s ease,
+        border-color 0.16s ease,
+        box-shadow 0.16s ease;
+}
+
+
+.tool-tab + .tool-tab {
+    margin-top: 5px;
+}
+
+
+.tool-tab:hover {
+    background:
+        #ffffff;
+}
+
+
+.tool-tab.active {
+    border-color:
+        #dce4ea;
+
+    background:
+        #ffffff;
+
+    box-shadow:
+        0 4px 16px
+        rgba(15, 39, 71, 0.05);
+}
+
+
+.tab-number {
+    width: 32px;
+    height: 32px;
+
+    flex:
+        0 0 32px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 7px;
+
+    background:
+        #eef3f7;
+
+    color:
+        var(--navy);
+
+    font-size: 9px;
+    font-weight: 800;
+}
+
+
+.tool-tab.active
+.tab-number {
+    background:
+        var(--navy);
+
+    color:
+        #ffffff;
+}
+
+
+.tool-tab > span:last-child {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+.tool-tab strong {
+    color:
+        var(--navy);
+
+    font-size: 9.5px;
+    font-weight: 700;
+}
+
+
+.tool-tab small {
+    margin-top: 3px;
+
+    color:
+        var(--muted);
+
+    font-size: 8px;
+}
+
+
+/* =========================================================
+   PANEL WRAPPER
+   ========================================================= */
+
+/*
+   Panel hasil radius tetap punya scroll sendiri
+   agar daftar 100+ aset tidak membuat sidebar
+   memanjang berlebihan.
+
+   Tetapi PAGE secara keseluruhan juga tetap bisa discroll.
+*/
+
+.panel-wrap {
+    height: 535px;
+
+    min-height: 535px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    overscroll-behavior: contain;
+
+    scrollbar-width: thin;
+
+    scrollbar-color:
+        #a8a8a8
+        transparent;
+}
+
+
+.panel-wrap::-webkit-scrollbar {
+    width: 7px;
+}
+
+
+.panel-wrap::-webkit-scrollbar-track {
+    background:
+        transparent;
+}
+
+
+.panel-wrap::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+
+    background:
+        #a8a8a8;
+}
+
+
+.panel-wrap::-webkit-scrollbar-thumb:hover {
+    background:
+        #888888;
+}
+
+
+/* =========================================================
+   TOOL PANEL
+   ========================================================= */
+
+.tool-panel {
+    padding:
+        23px 22px 28px;
+}
+
+
+.panel-heading {
+    margin-bottom: 21px;
+}
+
+
+.panel-heading h2 {
+    margin:
+        6px 0 7px;
+
+    color:
+        var(--navy);
+
+    font-size: 20px;
+    font-weight: 800;
+
+    letter-spacing: -0.5px;
+}
+
+
+.panel-heading p {
+    margin: 0;
+
+    color:
+        var(--muted);
+
+    font-size: 9px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.field-group {
+    margin-bottom: 15px;
+}
+
+
+.field-group label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color:
+        var(--text);
+
+    font-size: 8.5px;
+    font-weight: 700;
+}
+
+
+.field-group select,
+.field-group input {
+    width: 100%;
+    height: 40px;
+
+    padding:
+        0 11px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 6px;
+
+    outline: none;
+
+    background:
+        #ffffff;
+
+    color:
+        var(--text);
+
+    font-size: 8.5px;
+}
+
+
+.field-group select:focus,
+.field-group input:focus {
+    border-color:
+        var(--teal);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(28, 155, 164, 0.08);
+}
+
+
+.field-help {
+    display: block;
+
+    margin-top: 6px;
+
+    color:
+        var(--soft);
+
+    font-size: 7.7px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   UNIT INPUT
+   ========================================================= */
+
+.unit-input {
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        auto;
+}
+
+
+.unit-input input {
+    border-radius:
+        6px 0 0 6px;
+}
+
+
+.unit-input span {
+    min-width: 62px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-left: 0;
+
+    border-radius:
+        0 6px 6px 0;
+
+    background:
+        #f8fafb;
+
+    color:
+        var(--muted);
+
+    font-size: 8px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   QUICK RADIUS
+   ========================================================= */
+
+.quick-radius {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 6px;
+
+    margin:
+        -4px 0 16px;
+}
+
+
+.quick-radius button {
+    min-height: 29px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 5px;
+
+    background:
+        #ffffff;
+
+    color:
+        var(--muted);
+
+    font-size: 7.5px;
+    font-weight: 700;
+}
+
+
+.quick-radius button:hover {
+    border-color:
+        #cbd5df;
+
+    background:
+        #f8fafc;
+
+    color:
+        var(--navy);
+}
+
+
+/* =========================================================
+   PANEL ACTION
+   ========================================================= */
+
+.panel-actions {
+    display: grid;
+
+    grid-template-columns:
+        0.8fr
+        1.2fr;
+
+    gap: 8px;
+
+    margin-top: 18px;
+}
+
+
+/* =========================================================
+   DISTANCE SELECTION
+   ========================================================= */
+
+.selection-label {
+    width: fit-content;
+
+    margin-bottom: 7px;
+
+    padding:
+        5px 8px;
+
+    border-radius: 20px;
+
+    font-size: 7.5px;
+    font-weight: 800;
+
+    letter-spacing: 0.6px;
+}
+
+
+.selection-a {
+    background:
+        #eaf0f6;
+
+    color:
+        var(--navy);
+}
+
+
+.selection-b {
+    background:
+        #e7f5f5;
+
+    color:
+        #16737a;
+}
+
+
+/* =========================================================
+   RESULT CARD
+   ========================================================= */
+
+.result-card {
+    margin-top: 18px;
+
+    padding: 15px;
+
+    border:
+        1px solid
+        #dfe6ec;
+
+    border-radius: 8px;
+
+    background:
+        #fbfcfd;
+}
+
+
+.result-highlight {
+    margin-top: 5px;
+
+    color:
+        var(--navy);
+
+    font-size: 23px;
+    font-weight: 800;
+
+    letter-spacing: -0.8px;
+}
+
+
+.result-card > p {
+    margin:
+        5px 0 0;
+
+    color:
+        var(--muted);
+
+    font-size: 8px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   RADIUS RESULT LIST
+   ========================================================= */
+
+.radius-result-list {
+    max-height: 255px;
+
+    margin-top: 12px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    border-top:
+        1px solid
+        #edf0f3;
+
+    scrollbar-width: thin;
+}
+
+
+.radius-result-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+
+.radius-result-list::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+
+    background:
+        #a8a8a8;
+}
+
+
+.result-item {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding:
+        10px 2px;
+
+    border: 0;
+
+    border-bottom:
+        1px solid
+        #edf0f3;
+
+    background:
+        transparent;
+
+    text-align: left;
+}
+
+
+.result-item:hover {
+    background:
+        #f7f9fb;
+}
+
+
+.result-item span {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+.result-item strong {
+    overflow: hidden;
+
+    color:
+        var(--navy);
+
+    font-size: 8px;
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+}
+
+
+.result-item small {
+    margin-top: 3px;
+
+    color:
+        var(--soft);
+
+    font-size: 7px;
+}
+
+
+.result-item b {
+    flex:
+        0 0 auto;
+
+    color:
+        var(--muted);
+
+    font-size: 7.5px;
+}
+
+
+.result-more,
+.result-empty-small,
+.stat-empty-line {
+    padding:
+        10px 0 2px;
+
+    color:
+        var(--soft);
+
+    font-size: 7.5px;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   STAT EMPTY
+   ========================================================= */
+
+.stat-empty {
+    padding:
+        35px 18px;
+
+    border:
+        1px dashed
+        #d9e0e7;
+
+    border-radius: 8px;
+
+    text-align: center;
+}
+
+
+.empty-icon {
+    margin-bottom: 8px;
+
+    color:
+        var(--teal);
+
+    font-size: 30px;
+}
+
+
+.stat-empty strong {
+    display: block;
+
+    color:
+        var(--navy);
+
+    font-size: 10px;
+}
+
+
+.stat-empty p {
+    max-width: 260px;
+
+    margin:
+        7px auto 13px;
+
+    color:
+        var(--muted);
+
+    font-size: 8px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   STAT GRID
+   ========================================================= */
+
+.stat-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 8px;
+}
+
+
+.stat-card {
+    min-height: 82px;
+
+    padding: 13px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 7px;
+
+    background:
+        #ffffff;
+}
+
+
+.stat-card span {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color:
+        var(--muted);
+
+    font-size: 7.5px;
+    font-weight: 600;
+}
+
+
+.stat-card strong {
+    color:
+        var(--navy);
+
+    font-size: 15px;
+    line-height: 1.25;
+
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   BREAKDOWN
+   ========================================================= */
+
+.breakdown-card {
+    margin-top: 12px;
+
+    padding: 14px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 7px;
+}
+
+
+.breakdown-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-bottom: 13px;
+}
+
+
+.breakdown-title span {
+    color:
+        var(--navy);
+
+    font-size: 8.5px;
+    font-weight: 700;
+}
+
+
+.breakdown-title small {
+    color:
+        var(--soft);
+
+    font-size: 7px;
+}
+
+
+.breakdown-row + .breakdown-row {
+    margin-top: 11px;
+}
+
+
+.breakdown-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-bottom: 5px;
+}
+
+
+.breakdown-head span {
+    overflow: hidden;
+
+    color:
+        var(--text);
+
+    font-size: 7.5px;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+}
+
+
+.breakdown-head strong {
+    flex:
+        0 0 auto;
+
+    color:
+        var(--muted);
+
+    font-size: 7px;
+}
+
+
+.breakdown-track {
+    height: 5px;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    background:
+        #edf1f4;
+}
+
+
+.breakdown-track span {
+    display: block;
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        var(--teal);
+}
+
+
+/* =========================================================
+   MAP COLUMN
+   ========================================================= */
+
+/*
+   PENTING:
+
+   map-column TIDAK sticky.
+   Jadi seluruh halaman tetap discroll normal.
+
+   Control Leaflet tetap bergerak BERSAMA basemap,
+   bukan bersama viewport/browser.
+*/
+
+.map-column {
+    min-width: 0;
+    min-height: 680px;
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    z-index: 1;
+
+    background:
+        #f7f9fb;
+}
+
+
+/* =========================================================
+   MAP HEADER
+   ========================================================= */
+
+.map-head {
+    min-height: 66px;
+
+    flex:
+        0 0 66px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding:
+        0 18px;
+
+    position: relative;
+
+    z-index: 10;
+
+    border-bottom:
+        1px solid
+        var(--border);
+
+    background:
+        #ffffff;
+}
+
+
+.map-head > div:first-child {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.map-head strong {
+    color:
+        var(--navy);
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+
+.map-head span {
+    margin-top: 3px;
+
+    color:
+        var(--muted);
+
+    font-size: 7.5px;
+}
+
+
+/* =========================================================
+   INLINE MAP LEGEND
+   ========================================================= */
+
+.map-legend-inline {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+}
+
+
+.map-legend-inline span {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 5px;
+
+    margin: 0;
+
+    white-space: nowrap;
+}
+
+
+.legend-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 2px;
+}
+
+
+.legend-dot.center {
+    background:
+        var(--navy);
+}
+
+
+.legend-dot.result {
+    background:
+        var(--orange);
+}
+
+
+.legend-dot.second {
+    background:
+        var(--teal);
+}
+
+
+/* =========================================================
+   MAP FRAME
+   ========================================================= */
+
+/*
+   map-frame menjadi kotak pembatas Leaflet.
+
+   overflow:hidden memastikan control/pane tidak
+   menggambar keluar dari area map.
+*/
+
+.map-frame {
+    position: relative;
+
+    width: 100%;
+    height: 610px;
+
+    min-height: 610px;
+
+    flex: 1;
+
+    overflow: hidden;
+
+    z-index: 1;
+
+    isolation: isolate;
+}
+
+
+/* =========================================================
+   LEAFLET MAP
+   ========================================================= */
+
+#analysisMap {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    min-height: 610px;
+
+    overflow: hidden;
+
+    z-index: 1;
+
+    background:
+        #dfe6eb;
+}
+
+
+/*
+   JANGAN ubah .leaflet-top menjadi fixed/sticky.
+
+   Default Leaflet adalah absolute terhadap
+   map container dan itu justru yang kita inginkan.
+*/
+
+
+#analysisMap .leaflet-top,
+#analysisMap .leaflet-bottom {
+    /*
+       Default Leaflet sekitar 1000.
+       Kita turunkan karena navbar = 5000.
+    */
+    z-index: 900;
+}
+
+
+#analysisMap .leaflet-pane {
+    z-index: 200;
+}
+
+
+#analysisMap .leaflet-tile-pane {
+    z-index: 200;
+}
+
+
+#analysisMap .leaflet-overlay-pane {
+    z-index: 400;
+}
+
+
+#analysisMap .leaflet-marker-pane {
+    z-index: 600;
+}
+
+
+#analysisMap .leaflet-tooltip-pane {
+    z-index: 650;
+}
+
+
+#analysisMap .leaflet-popup-pane {
+    z-index: 700;
+}
+
+
+/*
+   Memberi jarak sedikit dari sudut basemap.
+*/
+
+#analysisMap
+.leaflet-top.leaflet-left {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+
+/*
+   Layer control tetap bagian dari map.
+*/
+
+#analysisMap
+.leaflet-control-layers {
+    border:
+        1px solid
+        rgba(15, 39, 71, 0.14);
+
+    border-radius: 6px;
+
+    box-shadow:
+        0 4px 15px
+        rgba(15, 39, 71, 0.08);
+}
+
+
+/*
+   Zoom control.
+*/
+
+#analysisMap
+.leaflet-control-zoom {
+    border:
+        1px solid
+        rgba(15, 39, 71, 0.14);
+
+    border-radius: 6px;
+
+    box-shadow:
+        0 4px 15px
+        rgba(15, 39, 71, 0.08);
+}
+
+
+/* =========================================================
+   MAP NOTE
+   ========================================================= */
+
+.map-note {
+    position: absolute;
+
+    left: 16px;
+    bottom: 16px;
+
+    z-index: 800;
+
+    max-width: 350px;
+
+    padding:
+        10px 12px;
+
+    border:
+        1px solid
+        rgba(222, 227, 233, 0.95);
+
+    border-radius: 7px;
+
+    background:
+        rgba(255, 255, 255, 0.94);
+
+    box-shadow:
+        0 5px 18px
+        rgba(15, 39, 71, 0.08);
+
+    pointer-events: none;
+}
+
+
+.map-note strong {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color:
+        var(--navy);
+
+    font-size: 8px;
+}
+
+
+.map-note span {
+    color:
+        var(--muted);
+
+    font-size: 7px;
+    line-height: 1.45;
+}
+
+
+/* =========================================================
+   LEAFLET TOOLTIP
+   ========================================================= */
+
+.asset-hover-tooltip,
+.distance-tooltip {
+    border:
+        1px solid
+        #dce3e9 !important;
+
+    border-radius:
+        5px !important;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.96
+        ) !important;
+
+    color:
+        var(--navy) !important;
+
+    box-shadow:
+        0 3px 12px
+        rgba(15, 39, 71, 0.08) !important;
+
+    font-family:
+        "Plus Jakarta Sans",
+        sans-serif !important;
+
+    font-size:
+        8px !important;
+
+    font-weight:
+        700 !important;
+}
+
+
+/* =========================================================
+   LOADING OVERLAY
+   ========================================================= */
+
+.loading-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 10000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        rgba(245, 247, 250, 0.74);
+
+    backdrop-filter:
+        blur(2px);
+}
+
+
+.loading-box {
+    min-width: 220px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 11px;
+
+    padding:
+        15px 18px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 8px;
+
+    background:
+        #ffffff;
+
+    box-shadow:
+        0 12px 35px
+        rgba(15, 39, 71, 0.12);
+}
+
+
+.loading-box strong {
+    color:
+        var(--navy);
+
+    font-size: 9px;
+}
+
+
+.spinner {
+    width: 21px;
+    height: 21px;
+
+    border:
+        2px solid
+        #e4e7ec;
+
+    border-top-color:
+        var(--teal);
+
+    border-radius: 50%;
+
+    animation:
+        spinnerRotate
+        0.8s
+        linear
+        infinite;
+}
+
+
+@keyframes spinnerRotate {
+
+    to {
+        transform:
+            rotate(360deg);
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE 1120
+   ========================================================= */
+
+@media (max-width: 1120px) {
+
+    .analysis-shell {
+        grid-template-columns:
+            350px
+            minmax(0, 1fr);
+    }
+
+
+    .map-legend-inline {
+        display: none;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .app-menu {
+        display: none;
+    }
+
+
+    .app-navbar {
+        padding:
+            0 4%;
+    }
+
+
+    .tool-main {
+        width:
+            calc(100% - 34px);
+
+        padding:
+            30px 0 50px;
+    }
+
+
+    .page-head {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+
+    .page-actions {
+        flex-wrap: wrap;
+    }
+
+
+    .analysis-shell {
+        grid-template-columns:
+            1fr;
+
+        min-height: 0;
+
+        overflow: hidden;
+    }
+
+
+    .tool-sidebar {
+        min-height: 0;
+
+        border-right: 0;
+
+        border-bottom:
+            1px solid
+            var(--border);
+    }
+
+
+    .panel-wrap {
+        height: auto;
+
+        min-height: 0;
+        max-height: none;
+
+        overflow: visible;
+    }
+
+
+    .map-column {
+        min-height: 520px;
+    }
+
+
+    .map-frame {
+        height: 520px;
+
+        min-height: 520px;
+    }
+
+
+    #analysisMap {
+        height: 520px;
+
+        min-height: 520px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE MOBILE
+   ========================================================= */
+
+@media (max-width: 620px) {
+
+    .app-navbar {
+        height: 70px;
+
+        padding:
+            0 5%;
+    }
+
+
+    .app-brand {
+        min-width: 0;
+    }
+
+
+    .app-brand img {
+        width: 40px;
+        height: 40px;
+    }
+
+
+    .brand-info {
+        display: none;
+    }
+
+
+    .user-area {
+        min-width: 0;
+    }
+
+
+    .tool-main {
+        width:
+            calc(100% - 28px);
+    }
+
+
+    .page-head h1 {
+        font-size: 28px;
+    }
+
+
+    .page-actions {
+        width: 100%;
+
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+
+    .tool-tabs {
+        padding: 10px;
+    }
+
+
+    .tool-tab small {
+        display: none;
+    }
+
+
+    .tool-panel {
+        padding:
+            20px 16px 25px;
+    }
+
+
+    .quick-radius {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .panel-actions {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .stat-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .map-head {
+        min-height: 58px;
+
+        padding:
+            0 13px;
+    }
+
+
+    .map-head > div:first-child span {
+        display: none;
+    }
+
+
+    .map-frame {
+        height: 480px;
+
+        min-height: 480px;
+    }
+
+
+    #analysisMap {
+        height: 480px;
+
+        min-height: 480px;
+    }
+
+
+    .map-note {
+        right: 12px;
+        left: 12px;
+        bottom: 12px;
+
+        max-width: none;
+    }
+
+}

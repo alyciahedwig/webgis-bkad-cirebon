@@ -1,0 +1,759 @@
+:root {
+    --navy: #0f2747;
+    --navy-dark: #091a30;
+    --blue: #2f5fe3;
+    --teal: #1c9ba4;
+
+    --white: #ffffff;
+    --background: #f5f7fa;
+
+    --text: #172033;
+    --muted: #667085;
+
+    --border: #e4e7ec;
+}
+
+/* ================= RESET ================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    background: var(--background);
+    color: var(--text);
+}
+
+
+/* ================= NAVBAR ================= */
+
+.navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 82px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 7%;
+
+    z-index: 20;
+
+    /*
+       Putih semi-transparan.
+       Background foto masih sedikit terlihat,
+       tetapi area putih logo JPG akan lebih tersamarkan.
+    */
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.94) 0%,
+            rgba(255, 255, 255, 0.90) 45%,
+            rgba(255, 255, 255, 0.82) 100%
+        );
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    border-bottom: 1px solid rgba(15, 39, 71, 0.08);
+
+    box-shadow: 0 2px 15px rgba(15, 39, 71, 0.04);
+}
+
+
+/* ================= BRAND ================= */
+
+.brand {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    color: var(--navy);
+    text-decoration: none;
+}
+
+
+/*
+   Logo JPG mempunyai background putih.
+   Multiply membantu warna putih menyatu
+   dengan background navbar.
+*/
+.brand-logo {
+    width: 48px;
+    height: 48px;
+
+    object-fit: contain;
+
+    border-radius: 0;
+
+    mix-blend-mode: multiply;
+
+    background: transparent;
+
+    box-shadow: none;
+}
+
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.brand-title {
+    color: var(--navy);
+
+    font-size: 16px;
+    font-weight: 700;
+
+    letter-spacing: -0.3px;
+}
+
+
+.brand-subtitle {
+    margin-top: 2px;
+
+    color: #667085;
+
+    font-size: 11px;
+    font-weight: 500;
+}
+
+
+/* ================= NAV MENU ================= */
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+
+    gap: 34px;
+}
+
+
+.nav-menu a {
+    position: relative;
+
+    padding: 31px 0 28px;
+
+    color: #667085;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    transition:
+        color 0.2s ease,
+        opacity 0.2s ease;
+}
+
+
+.nav-menu a:hover {
+    color: var(--navy);
+}
+
+
+.nav-menu a.active {
+    color: var(--navy);
+
+    font-weight: 700;
+}
+
+
+.nav-menu a.active::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 19px;
+
+    height: 2px;
+
+    border-radius: 2px;
+
+    background: var(--teal);
+}
+
+/* ================= HERO ================= */
+
+.hero {
+    position: relative;
+
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+
+    padding: 120px 7% 80px;
+
+    overflow: hidden;
+
+    background-image: url("../assets/img/landingpagecirebon.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+/*
+   Gradient ini yang menutup ketajaman foto.
+   Sebelah kiri lebih gelap karena tempat teks.
+   Semakin ke kanan semakin transparan.
+*/
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(9, 26, 48, 0.96) 0%,
+            rgba(15, 39, 71, 0.90) 30%,
+            rgba(15, 39, 71, 0.70) 53%,
+            rgba(15, 39, 71, 0.38) 76%,
+            rgba(15, 39, 71, 0.24) 100%
+        ),
+        linear-gradient(
+            0deg,
+            rgba(5, 17, 31, 0.28),
+            rgba(5, 17, 31, 0.06)
+        );
+
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+
+    width: min(760px, 100%);
+}
+
+.hero h1 {
+    margin: 0;
+
+    max-width: 760px;
+
+    color: white;
+
+    font-size: clamp(42px, 5vw, 70px);
+    line-height: 1.08;
+
+    letter-spacing: -2.5px;
+
+    font-weight: 800;
+}
+
+.hero h1 span {
+    display: block;
+
+    margin-top: 8px;
+
+    color: #dbe8ff;
+}
+
+.hero-description {
+    max-width: 660px;
+
+    margin: 27px 0 0;
+
+    color: rgba(255, 255, 255, 0.78);
+
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.85;
+}
+
+
+/* ================= ACCESS BUTTON ================= */
+
+.access-area {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    margin-top: 38px;
+}
+
+.access-button {
+    position: relative;
+
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+
+    text-decoration: none;
+}
+
+.access-button svg {
+    width: 21px;
+    height: 21px;
+
+    fill: currentColor;
+}
+
+.guest-access {
+    color: var(--navy);
+
+    background: white;
+
+    border: 1px solid white;
+}
+
+.admin-access {
+    color: white;
+
+    background: rgba(255, 255, 255, 0.10);
+
+    border: 1px solid rgba(255, 255, 255, 0.32);
+}
+
+.access-button:hover {
+    transform: translateY(-3px);
+}
+
+.admin-access:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.60);
+}
+
+
+/* ================= ACCESS TOOLTIP ================= */
+
+.access-area {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    margin-top: 38px;
+
+    overflow: visible;
+}
+
+.access-button {
+    position: relative;
+
+    width: 52px;
+    height: 52px;
+
+    flex: 0 0 52px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: visible;
+}
+
+.access-tooltip {
+    position: absolute;
+
+    left: 50%;
+    bottom: calc(100% + 13px);
+
+    width: max-content;
+    min-width: 175px;
+    max-width: 230px;
+
+    padding: 11px 14px;
+
+    transform: translate(-50%, 6px);
+
+    background: #ffffff;
+
+    border: 1px solid rgba(15, 39, 71, 0.08);
+    border-radius: 8px;
+
+    box-shadow:
+        0 12px 28px rgba(9, 26, 48, 0.18);
+
+    color: var(--text);
+
+    text-align: left;
+    white-space: nowrap;
+
+    opacity: 0;
+    visibility: hidden;
+
+    pointer-events: none;
+
+    z-index: 100;
+
+    transition:
+        opacity 0.18s ease,
+        transform 0.18s ease,
+        visibility 0.18s ease;
+}
+
+.access-tooltip::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    bottom: -5px;
+
+    width: 10px;
+    height: 10px;
+
+    background: #ffffff;
+
+    border-right: 1px solid rgba(15, 39, 71, 0.08);
+    border-bottom: 1px solid rgba(15, 39, 71, 0.08);
+
+    transform:
+        translateX(-50%)
+        rotate(45deg);
+}
+
+.access-tooltip strong {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: var(--navy);
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.access-tooltip small {
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 10px;
+    font-weight: 500;
+
+    line-height: 1.45;
+
+    white-space: nowrap;
+}
+
+.access-button:hover .access-tooltip,
+.access-button:focus-visible .access-tooltip {
+    opacity: 1;
+    visibility: visible;
+
+    transform: translate(-50%, 0);
+}
+
+
+/* Jika user klik Beranda sebelum memilih akses */
+
+.access-area.access-attention .access-button {
+    animation: accessPulse 0.7s ease;
+}
+
+@keyframes accessPulse {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+.access-hint {
+    margin-top: 13px;
+
+    color: rgba(255, 255, 255, 0.58);
+
+    font-size: 11px;
+    font-weight: 500;
+
+    transition: color 0.2s ease;
+}
+
+.access-hint.attention {
+    color: #ffffff;
+}
+
+/* ================= SCROLL ================= */
+
+.scroll-indicator {
+    position: absolute;
+
+    z-index: 3;
+
+    left: 50%;
+    bottom: 27px;
+
+    width: 24px;
+    height: 40px;
+
+    transform: translateX(-50%);
+
+    border: 1px solid rgba(255, 255, 255, 0.38);
+    border-radius: 15px;
+}
+
+.scroll-indicator span {
+    position: absolute;
+
+    top: 8px;
+    left: 50%;
+
+    width: 4px;
+    height: 4px;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background: white;
+
+    animation: scrollMove 1.8s infinite;
+}
+
+@keyframes scrollMove {
+
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 0);
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, 15px);
+    }
+}
+
+/* ================= ABOUT ================= */
+
+.about {
+    padding: 105px 7%;
+
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+
+    gap: 90px;
+
+    background: #ffffff;
+}
+
+.about-heading {
+    max-width: 520px;
+}
+
+.section-label {
+    color: var(--blue);
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+}
+
+.about-heading h2 {
+    margin: 14px 0 0;
+
+    color: var(--navy);
+
+    font-size: 36px;
+    line-height: 1.25;
+
+    letter-spacing: -1.4px;
+
+    font-weight: 750;
+}
+
+.about-content > p {
+    max-width: 650px;
+
+    margin: 0 0 38px;
+
+    color: var(--muted);
+
+    font-size: 15px;
+    line-height: 1.9;
+}
+
+.about-points {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0;
+}
+
+.about-item {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+
+    gap: 18px;
+
+    padding: 22px 0;
+
+    border-top: 1px solid var(--border);
+}
+
+.about-item:last-child {
+    border-bottom: 1px solid var(--border);
+}
+
+.about-item > span {
+    color: var(--teal);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+}
+
+.about-item strong {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: var(--navy);
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.about-item p {
+    max-width: 540px;
+
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+
+/* ================= FOOTER ================= */
+
+.footer {
+    min-height: 100px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    padding: 25px 7%;
+
+    background: var(--navy-dark);
+
+    color: white;
+}
+
+.footer > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer strong {
+    font-size: 13px;
+}
+
+.footer span,
+.footer p {
+    color: rgba(255, 255, 255, 0.57);
+
+    font-size: 10px;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 850px) {
+
+    .navbar {
+        height: 72px;
+        padding: 0 5%;
+    }
+
+    .brand-logo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .nav-menu {
+        display: none;
+    }
+
+    .hero {
+        min-height: 100svh;
+
+        padding:
+            110px
+            6%
+            70px;
+
+        background-position: 65% center;
+    }
+
+    .hero-overlay {
+        background:
+            linear-gradient(
+                rgba(9, 26, 48, 0.91),
+                rgba(9, 26, 48, 0.77)
+            );
+    }
+
+    .hero h1 {
+        font-size: 43px;
+
+        letter-spacing: -1.6px;
+    }
+
+    .hero-description {
+        font-size: 14px;
+    }
+
+    .about {
+        grid-template-columns: 1fr;
+
+        gap: 30px;
+
+        padding: 70px 6%;
+    }
+
+    .footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

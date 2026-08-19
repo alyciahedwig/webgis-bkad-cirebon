@@ -1,0 +1,79 @@
+/* =========================================================
+   GLOBAL FOOTER
+   WEBGIS BKAD KABUPATEN CIREBON
+   ========================================================= */
+
+.site-footer {
+    width: 100%;
+
+    border-top:
+        1px solid
+        #e4e7ec;
+
+    background:
+        #ffffff;
+}
+
+
+.site-footer-inner {
+    width:
+        min(
+            1440px,
+            calc(100% - 48px)
+        );
+
+    min-height: 68px;
+
+    margin:
+        0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 24px;
+}
+
+
+.footer-left,
+.footer-right {
+    color:
+        #7a8392;
+
+    font-size: 10px;
+    font-weight: 500;
+
+    line-height: 1.5;
+}
+
+
+.footer-right {
+    text-align: right;
+}
+
+
+@media (max-width: 650px) {
+
+    .site-footer-inner {
+        width:
+            calc(100% - 32px);
+
+        min-height: 82px;
+
+        align-items: flex-start;
+        justify-content: center;
+
+        flex-direction: column;
+
+        gap: 5px;
+
+        padding:
+            15px 0;
+    }
+
+
+    .footer-right {
+        text-align: left;
+    }
+
+}

@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Data Aset - WebGIS BKAD Kabupaten Cirebon
+    </title>
+
+
+    <!-- FONT -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+<link
+    rel="stylesheet"
+    href="css/footer.css?v=1"
+>
+
+    <!-- CSS -->
+    <!-- ?v=4 untuk mencegah browser membaca cache lama -->
+
+    <link
+        rel="stylesheet"
+        href="css/data-aset.css?v=4"
+    >
+</head>
+
+
+<body>
+
+
+<div class="data-page">
+
+
+    <!-- ==================================================
+         NAVBAR
+         ================================================== -->
+
+    <header class="app-navbar">
+
+
+        <a
+            href="beranda.html"
+            class="app-brand"
+        >
+
+            <img
+                src="assets/img/logokabcirebon.jpg"
+                alt="Logo Kabupaten Cirebon"
+            >
+
+            <div class="brand-info">
+
+                <strong>
+                    BKAD Kabupaten Cirebon
+                </strong>
+
+                <span>
+                    Basis Data Spasial Tanah Aset
+                </span>
+
+            </div>
+
+        </a>
+
+
+
+        <nav class="app-menu">
+
+            <a href="beranda.html">
+                Beranda
+            </a>
+
+            <a href="map.html">
+                Peta
+            </a>
+
+            <a
+                href="data-aset.html"
+                class="active"
+            >
+                Data Aset
+            </a>
+
+            <a href="alat.html">
+    Alat
+</a>
+
+            <a href="tentang.html">
+    Tentang
+</a>
+        </nav>
+
+
+
+        <div class="user-area">
+
+            <span
+                class="role-badge"
+                id="roleBadge"
+            >
+                Guest
+            </span>
+
+            <button
+                type="button"
+                class="logout-button"
+                onclick="logoutWebGIS()"
+            >
+                Keluar
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ==================================================
+         MAIN
+         ================================================== -->
+
+    <main class="data-main">
+
+
+        <!-- HEADER -->
+
+        <section class="page-header">
+
+            <div>
+
+                <span class="page-eyebrow">
+                    DATA ASET
+                </span>
+
+                <div class="page-title-row">
+
+                    <h1>
+                        Data Aset
+                    </h1>
+
+                    <span
+                        class="asset-total-badge"
+                        id="assetTotalBadge"
+                    >
+                        — bidang
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <button
+                type="button"
+                class="add-asset-button"
+                id="addAssetButton"
+                hidden
+            >
+                <span>+</span>
+                Tambah Data
+            </button>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             FILTER
+             ================================================== -->
+
+        <section class="filter-panel">
+
+
+            <div class="filter-search">
+
+                <label for="assetSearch">
+                    Pencarian
+                </label>
+
+                <div class="search-input-wrapper">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+
+                        <circle
+                            cx="11"
+                            cy="11"
+                            r="6.5"
+                        ></circle>
+
+                        <path
+                            d="M16 16L21 21"
+                        ></path>
+
+                    </svg>
+
+
+                    <input
+                        type="text"
+                        id="assetSearch"
+                        placeholder="Cari NIB / ID Barang"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <div class="filter-field">
+
+                <label for="filterKecamatan">
+                    Kecamatan
+                </label>
+
+                <select id="filterKecamatan">
+
+                    <option value="">
+                        Semua Kecamatan
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <div class="filter-field">
+
+                <label for="filterPenggunaan">
+                    Penggunaan
+                </label>
+
+                <select id="filterPenggunaan">
+
+                    <option value="">
+                        Semua Penggunaan
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <div class="filter-field">
+
+                <label for="filterKelengkapan">
+                    Kelengkapan
+                </label>
+
+                <select id="filterKelengkapan">
+
+                    <option value="">
+                        Semua Data
+                    </option>
+
+                    <option value="lengkap">
+                        Lengkap
+                    </option>
+
+                    <option value="kurang">
+                        Belum Lengkap
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <button
+                type="button"
+                class="filter-reset-button"
+                id="filterResetButton"
+            >
+                Reset
+            </button>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             RESULT
+             ================================================== -->
+
+        <section class="result-bar">
+
+            <div>
+
+                <strong id="resultCount">
+                    —
+                </strong>
+
+                <span>
+                    bidang ditampilkan
+                </span>
+
+            </div>
+
+
+            <span id="activeFilterText">
+                Semua data
+            </span>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             TABLE
+             ================================================== -->
+
+        <section class="table-card">
+
+
+            <div class="table-scroll">
+
+
+                <table class="asset-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                NIB / ID Barang
+                            </th>
+
+                            <th>
+                                Penggunaan
+                            </th>
+
+                            <th>
+                                NUB
+                            </th>
+
+                            <th class="numeric-column">
+                                Luas
+                            </th>
+
+                            <th>
+                                Kecamatan
+                            </th>
+
+                            <th>
+                                Desa
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Kelengkapan
+                            </th>
+
+                            <th class="action-column">
+                                Aksi
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="assetTableBody"></tbody>
+
+                </table>
+
+
+
+                <!-- LOADING -->
+
+                <div
+                    class="table-state"
+                    id="loadingState"
+                >
+
+                    <div class="loading-spinner"></div>
+
+                    <strong>
+                        Memuat data aset
+                    </strong>
+
+                </div>
+
+
+
+                <!-- EMPTY -->
+
+                <div
+                    class="table-state"
+                    id="emptyState"
+                    hidden
+                >
+
+                    <strong>
+                        Data tidak ditemukan
+                    </strong>
+
+                    <span>
+                        Sesuaikan pencarian atau filter yang digunakan.
+                    </span>
+
+                </div>
+
+
+
+                <!-- ERROR -->
+
+                <div
+                    class="table-state table-error"
+                    id="errorState"
+                    hidden
+                >
+
+                    <strong>
+                        Data tidak dapat dimuat
+                    </strong>
+
+                    <span>
+                        Periksa koneksi GeoServer kemudian muat ulang halaman.
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- PAGINATION -->
+
+            <footer class="table-footer">
+
+                <div id="paginationInfo">
+                    —
+                </div>
+
+
+                <div class="pagination-controls">
+
+                    <button
+                        type="button"
+                        class="pagination-button"
+                        id="previousPageButton"
+                    >
+                        ←
+                    </button>
+
+
+                    <div
+                        class="pagination-pages"
+                        id="paginationPages"
+                    ></div>
+
+
+                    <button
+                        type="button"
+                        class="pagination-button"
+                        id="nextPageButton"
+                    >
+                        →
+                    </button>
+
+                </div>
+
+            </footer>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- ======================================================
+     DETAIL
+     ====================================================== -->
+
+<div
+    class="detail-backdrop"
+    id="detailBackdrop"
+></div>
+
+
+<aside
+    class="detail-drawer"
+    id="detailDrawer"
+    aria-hidden="true"
+>
+
+
+    <header class="detail-drawer-header">
+
+        <div>
+
+            <span class="detail-eyebrow">
+                DETAIL ASET
+            </span>
+
+            <h2 id="detailTitle">
+                —
+            </h2>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="detail-close-button"
+            id="detailCloseButton"
+            aria-label="Tutup detail"
+        >
+            ×
+        </button>
+
+    </header>
+
+
+
+    <div
+        class="detail-drawer-body"
+        id="detailDrawerBody"
+    ></div>
+
+
+
+    <footer class="detail-drawer-footer">
+
+        <button
+            type="button"
+            class="detail-footer-button secondary"
+            id="downloadPdfButton"
+        >
+            Unduh PDF
+        </button>
+
+
+        <button
+            type="button"
+            class="detail-footer-button primary"
+            id="detailMapButton"
+        >
+            Lihat di Peta
+        </button>
+
+    </footer>
+
+
+</aside>
+
+
+
+<!-- PDF -->
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+></script>
+
+
+<!-- SESSION -->
+
+<script src="js/session.js"></script>
+
+
+<!-- DATA ASET -->
+<!-- ?v=4 memaksa browser membaca JS terbaru -->
+
+<script src="js/data-aset.js?v=4"></script>
+
+<footer class="site-footer">
+
+    <div class="site-footer-inner">
+
+        <span class="footer-left">
+            © 2026 BKAD Kabupaten Cirebon
+        </span>
+
+        <span class="footer-right">
+            Rame ing gawe, sepi ing pamrih
+        </span>
+
+    </div>
+
+</footer>
+
+</body>
+
+</html>

@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Tambah Data Aset - WebGIS BKAD Kabupaten Cirebon
+    </title>
+
+
+    <!-- FONT -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- CSS -->
+
+    <link
+        rel="stylesheet"
+        href="css/admin-tambah.css?v=1"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/footer.css?v=1"
+    >
+
+</head>
+
+
+<body>
+
+
+<div class="admin-page">
+
+
+    <!-- ==================================================
+         NAVBAR
+         ================================================== -->
+
+    <header class="app-navbar">
+
+
+        <a
+            href="beranda.html"
+            class="app-brand"
+        >
+
+            <img
+                src="assets/img/logokabcirebon.jpg"
+                alt="Logo Kabupaten Cirebon"
+            >
+
+
+            <div class="brand-info">
+
+                <strong>
+                    BKAD Kabupaten Cirebon
+                </strong>
+
+                <span>
+                    Basis Data Spasial Tanah Aset
+                </span>
+
+            </div>
+
+        </a>
+
+
+
+        <nav class="app-menu">
+
+            <a href="beranda.html">
+                Beranda
+            </a>
+
+            <a href="map.html">
+                Peta
+            </a>
+
+            <a
+                href="data-aset.html"
+                class="active"
+            >
+                Data Aset
+            </a>
+
+            <a href="alat.html">
+                Alat
+            </a>
+
+            <a href="tentang.html">
+                Tentang
+            </a>
+
+        </nav>
+
+
+
+        <div class="user-area">
+
+            <span class="role-badge">
+                Admin
+            </span>
+
+            <button
+                type="button"
+                class="logout-button"
+                onclick="logoutWebGIS()"
+            >
+                Keluar
+            </button>
+
+        </div>
+
+
+    </header>
+
+
+
+    <!-- ==================================================
+         MAIN
+         ================================================== -->
+
+    <main class="admin-main">
+
+
+        <!-- BACK -->
+
+        <a
+            href="data-aset.html"
+            class="back-link"
+        >
+            ← Kembali ke Data Aset
+        </a>
+
+
+
+        <!-- HEADER -->
+
+        <section class="page-header">
+
+            <span class="page-eyebrow">
+                PENGELOLAAN DATA
+            </span>
+
+            <h1>
+                Tambah Data Aset
+            </h1>
+
+            <p>
+                Impor data bidang tanah aset dari GeoJSON atau
+                Shapefile dalam format ZIP. Periksa sistem koordinat,
+                pemetaan atribut, dan hasil pratinjau sebelum data
+                disimpan ke basis data.
+            </p>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             STEP 01
+             ================================================== -->
+
+        <section class="form-card">
+
+
+            <header class="card-header">
+
+                <span class="step-number">
+                    01
+                </span>
+
+                <div>
+
+                    <h2>
+                        Unggah data spasial
+                    </h2>
+
+                    <p>
+                        Gunakan GeoJSON atau Shapefile ZIP.
+                        Untuk SHP berproyeksi, sertakan file
+                        <code>.prj</code> agar sistem koordinat dapat
+                        dibaca dengan benar.
+                    </p>
+
+                </div>
+
+            </header>
+
+
+
+            <div class="upload-area">
+
+
+                <input
+                    type="file"
+                    id="spatialFile"
+                    accept=".zip,.geojson,.json"
+                >
+
+
+                <label
+                    for="spatialFile"
+                    class="upload-box"
+                    id="uploadBox"
+                >
+
+                    <div class="upload-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <path d="M12 16V4"></path>
+                            <path d="m7 9 5-5 5 5"></path>
+                            <path d="M5 14v5h14v-5"></path>
+                        </svg>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong id="uploadTitle">
+                            Pilih GeoJSON atau SHP ZIP
+                        </strong>
+
+                        <span id="uploadSubtitle">
+                            Klik untuk memilih file dari perangkat
+                        </span>
+
+                    </div>
+
+
+                    <small>
+                        ZIP: .shp, .dbf, .shx dan .prj untuk data berproyeksi
+                    </small>
+
+                </label>
+
+
+            </div>
+
+
+
+            <div class="input-divider">
+
+                <span>
+                    ATAU
+                </span>
+
+            </div>
+
+
+
+            <div class="paste-group">
+
+                <label for="geojsonText">
+                    Tempel GeoJSON
+                </label>
+
+                <textarea
+                    id="geojsonText"
+                    placeholder='{"type":"FeatureCollection","features":[...]}'
+                ></textarea>
+
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    id="readGeoJsonButton"
+                >
+                    Baca GeoJSON
+                </button>
+
+            </div>
+
+
+
+            <div
+                class="source-status"
+                id="sourceStatus"
+                hidden
+            ></div>
+
+
+        </section>
+
+
+
+        <!-- ==================================================
+             STEP 02
+             ================================================== -->
+
+        <section class="form-card">
+
+
+            <header class="card-header">
+
+                <span class="step-number">
+                    02
+                </span>
+
+                <div>
+
+                    <h2>
+                        Sistem koordinat sumber
+                    </h2>
+
+                    <p>
+                        Pilih sistem koordinat yang digunakan oleh
+                        geometri sumber. Data akan disesuaikan ke
+                        sistem koordinat tabel aset saat disimpan.
+                    </p>
+
+                </div>
+
+            </header>
+
+
+
+            <div
+                class="crs-options"
+                id="crsOptions"
+            >
+
+
+                <label class="crs-option">
+
+                    <input
+                        type="radio"
+                        name="sourceCrs"
+                        value="4326"
+                        checked
+                    >
+
+                    <span class="radio-mark"></span>
+
+                    <span class="crs-copy">
+
+                        <strong>
+                            WGS 84
+                            <small>EPSG:4326</small>
+                        </strong>
+
+                        <em>
+                            GeoJSON berbasis longitude dan latitude
+                        </em>
+
+                    </span>
+
+                </label>
+
+
+
+                <label class="crs-option">
+
+                    <input
+                        type="radio"
+                        name="sourceCrs"
+                        value="23835"
+                    >
+
+                    <span class="radio-mark"></span>
+
+                    <span class="crs-copy">
+
+                        <strong>
+                            TM-3 zona 49.1
+                            <small>EPSG:23835</small>
+                        </strong>
+
+                        <em>
+                            Sistem koordinat meter yang digunakan
+                            pada data aset Kabupaten Cirebon
+                        </em>
+
+                    </span>
+
+                </label>
+
+
+
+                <label class="crs-option">
+
+                    <input
+                        type="radio"
+                        name="sourceCrs"
+                        value="32749"
+                    >
+
+                    <span class="radio-mark"></span>
+
+                    <span class="crs-copy">
+
+                        <strong>
+                            WGS 84 / UTM zona 49S
+                            <small>EPSG:32749</small>
+                        </strong>
+
+                        <em>
+                            Sistem koordinat UTM zona 49 belahan selatan
+                        </em>
+
+                    </span>
+
+                </label>
+
+
+            </div>
+
+
+
+            <div
+                class="crs-note"
+                id="crsNote"
+            >
+                Terpilih: WGS 84 (EPSG:4326)
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ==================================================
+             STEP 03
+             ================================================== -->
+
+        <section class="form-card">
+
+
+            <header class="card-header">
+
+                <span class="step-number">
+                    03
+                </span>
+
+                <div>
+
+                    <h2>
+                        Pemetaan atribut
+                    </h2>
+
+                    <p>
+                        Cocokkan kolom pada file sumber dengan
+                        atribut WebGIS. ID Barang dan NUB wajib tersedia.
+                    </p>
+
+                </div>
+
+            </header>
+
+
+
+            <div class="mapping-grid">
+
+
+                <div class="mapping-field">
+
+                    <label for="mapIdBarang">
+                        ID Barang
+                        <span>*</span>
+                    </label>
+
+                    <select id="mapIdBarang">
+                        <option value="">
+                            Pilih kolom...
+                        </option>
+                    </select>
+
+                </div>
+
+
+
+                <div class="mapping-field">
+
+                    <label for="mapPenggunaan">
+                        Penggunaan
+                    </label>
+
+                    <select id="mapPenggunaan">
+                        <option value="">
+                            Tidak dipetakan
+                        </option>
+                    </select>
+
+                </div>
+
+
+
+                <div class="mapping-field">
+
+                    <label for="mapNub">
+                        NUB
+                        <span>*</span>
+                    </label>
+
+                    <select id="mapNub">
+                        <option value="">
+                            Pilih kolom...
+                        </option>
+                    </select>
+
+                </div>
+
+
+
+                <div class="mapping-field">
+
+                    <label>
+                        Luas
+                    </label>
+
+                    <div class="automatic-field">
+                        Dihitung otomatis dari geometri
+                    </div>
+
+                </div>
+
+
+
+                <div class="mapping-field">
+
+                    <label for="mapKecamatan">
+                        Kecamatan
+                    </label>
+
+                    <select id="mapKecamatan">
+                        <option value="">
+                            Tidak dipetakan
+                        </option>
+                    </select>
+
+                </div>
+
+
+
+                <div class="mapping-field">
+
+                    <label for="mapDesa">
+                        Desa/Kelurahan
+                    </label>
+
+                    <select id="mapDesa">
+                        <option value="">
+                            Tidak dipetakan
+                        </option>
+                    </select>
+
+                </div>
+
+
+
+                <div class="mapping-field">
+
+                    <label for="mapStatus">
+                        Status
+                    </label>
+
+                    <select id="mapStatus">
+                        <option value="">
+                            Tidak dipetakan
+                        </option>
+                    </select>
+
+                </div>
+
+
+
+                <div class="mapping-field">
+
+                    <label for="mapKeterangan">
+                        Keterangan
+                    </label>
+
+                    <select id="mapKeterangan">
+                        <option value="">
+                            Tidak dipetakan
+                        </option>
+                    </select>
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="automatic-note">
+
+                <span>i</span>
+
+                <p>
+                    Nilai <strong>luas_m2</strong> tidak diambil sebagai
+                    nilai final dari file sumber. Luas dihitung ulang
+                    berdasarkan geometri ketika data disimpan.
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ==================================================
+             STEP 04
+             ================================================== -->
+
+        <section class="form-card">
+
+
+            <header class="card-header">
+
+                <span class="step-number">
+                    04
+                </span>
+
+                <div>
+
+                    <h2>
+                        Penanganan NUB yang sudah tersedia
+                    </h2>
+
+                    <p>
+                        Tentukan tindakan apabila NUB pada data baru
+                        sudah ditemukan di basis data.
+                    </p>
+
+                </div>
+
+            </header>
+
+
+
+            <div class="duplicate-options">
+
+
+                <label class="duplicate-option">
+
+                    <input
+                        type="radio"
+                        name="duplicateMode"
+                        value="skip"
+                        checked
+                    >
+
+                    <span>
+
+                        <strong>
+                            Lewati data
+                        </strong>
+
+                        <small>
+                            Data lama tetap dipertahankan dan baris baru
+                            dengan NUB yang sama tidak disimpan.
+                        </small>
+
+                    </span>
+
+                </label>
+
+
+
+                <label class="duplicate-option">
+
+                    <input
+                        type="radio"
+                        name="duplicateMode"
+                        value="update"
+                    >
+
+                    <span>
+
+                        <strong>
+                            Perbarui data
+                        </strong>
+
+                        <small>
+                            Atribut dan geometri aset dengan NUB yang sama
+                            akan diperbarui menggunakan data yang diimpor.
+                        </small>
+
+                    </span>
+
+                </label>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ==================================================
+             PREVIEW
+             ================================================== -->
+
+        <section
+            class="preview-card"
+            id="previewCard"
+        >
+
+
+            <header class="preview-header">
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        PRATINJAU DATA
+                    </span>
+
+                    <h2>
+                        Periksa sebelum disimpan
+                    </h2>
+
+                </div>
+
+
+                <div
+                    class="preview-summary"
+                    id="previewSummary"
+                >
+                    Belum ada data
+                </div>
+
+            </header>
+
+
+
+            <div class="table-wrapper">
+
+                <table class="preview-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>#</th>
+
+                            <th>NUB</th>
+
+                            <th>ID Barang</th>
+
+                            <th>Penggunaan</th>
+
+                            <th>Kecamatan</th>
+
+                            <th>Geometri</th>
+
+                            <th>Catatan</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="previewBody">
+
+                        <tr>
+
+                            <td
+                                colspan="7"
+                                class="empty-preview"
+                            >
+                                Unggah atau tempel data GeoJSON untuk
+                                menampilkan pratinjau.
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ==================================================
+             RESULT
+             ================================================== -->
+
+        <section
+            class="import-result"
+            id="importResult"
+            hidden
+        ></section>
+
+
+
+        <!-- ==================================================
+             ACTION
+             ================================================== -->
+
+        <section class="import-actions">
+
+
+            <div class="import-progress">
+
+                <span id="progressLabel">
+                    Data belum siap diimpor
+                </span>
+
+                <div class="progress-track">
+
+                    <span
+                        id="progressBar"
+                        style="width:0%"
+                    ></span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="action-buttons">
+
+                <a
+                    href="data-aset.html"
+                    class="cancel-button"
+                >
+                    Batal
+                </a>
+
+
+                <button
+                    type="button"
+                    class="import-button"
+                    id="importButton"
+                    disabled
+                >
+                    Simpan ke Basis Data
+                </button>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- ==================================================
+         FOOTER
+         ================================================== -->
+
+    <footer class="site-footer">
+
+        <div class="site-footer-inner">
+
+            <span class="footer-left">
+                © 2026 BKAD Kabupaten Cirebon
+            </span>
+
+            <span class="footer-right">
+                Rame ing gawe, sepi ing pamrih
+            </span>
+
+        </div>
+
+    </footer>
+
+
+</div>
+
+
+
+<!-- SHAPEFILE PARSER -->
+
+<script
+    src="https://unpkg.com/shpjs@6.2.0/dist/shp.js"
+></script>
+
+
+<!-- SESSION -->
+
+<script src="js/session.js?v=2"></script>
+
+
+<!-- ADMIN IMPORT -->
+
+<script src="js/admin-tambah.js?v=1"></script>
+
+
+</body>
+
+</html>

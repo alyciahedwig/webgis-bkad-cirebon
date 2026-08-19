@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Beranda - WebGIS BKAD Kabupaten Cirebon
+    </title>
+
+    <!-- FONT -->
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- CSS -->
+    <link
+        rel="stylesheet"
+        href="css/dashboard.css"
+    >
+<link
+    rel="stylesheet"
+    href="css/footer.css?v=1"
+>
+</head>
+
+
+<body>
+
+
+<!-- ======================================================
+     NAVBAR
+     ====================================================== -->
+
+<header class="app-navbar">
+
+    <!-- BRAND -->
+    <a
+        href="beranda.html"
+        class="app-brand"
+    >
+
+        <img
+            src="assets/img/logokabcirebon.jpg"
+            alt="Logo Kabupaten Cirebon"
+        >
+
+        <div class="brand-info">
+
+            <strong>
+                BKAD Kabupaten Cirebon
+            </strong>
+
+            <span>
+                Basis Data Spasial Tanah Aset
+            </span>
+
+        </div>
+
+    </a>
+
+
+    <!-- MENU -->
+    <nav class="app-menu">
+
+        <a
+            href="beranda.html"
+            class="active"
+        >
+            Beranda
+        </a>
+
+        <a href="map.html">
+            Peta
+        </a>
+
+       <a href="data-aset.html">
+    Data Aset
+</a>
+
+        <a href="alat.html">
+    Alat
+</a>
+
+        <a href="tentang.html">
+    Tentang
+</a>
+
+    </nav>
+
+
+    <!-- USER -->
+    <div class="user-area">
+
+        <span
+            class="role-badge"
+            id="roleBadge"
+        >
+            Guest
+        </span>
+
+        <button
+            type="button"
+            class="logout-button"
+            onclick="logoutWebGIS()"
+        >
+            Keluar
+        </button>
+
+    </div>
+
+</header>
+
+
+
+<!-- ======================================================
+     DASHBOARD
+     ====================================================== -->
+
+<main class="dashboard">
+
+
+    <!-- ================= HEADER ================= -->
+
+    <section class="dashboard-header">
+
+        <div>
+
+            <span class="dashboard-eyebrow">
+                DASHBOARD
+            </span>
+
+            <h1>
+                Ringkasan Aset Daerah
+            </h1>
+
+        </div>
+
+
+        <a
+            href="map.html"
+            class="open-map"
+        >
+            Buka Peta
+        </a>
+
+    </section>
+
+
+
+    <!-- ================= SUMMARY ================= -->
+
+    <section class="summary-grid summary-grid-two">
+
+
+        <!-- TOTAL ASET -->
+        <article class="summary-card">
+
+            <span class="summary-label">
+                Total Aset
+            </span>
+
+            <strong
+                class="summary-value"
+                id="totalAset"
+            >
+                —
+            </strong>
+
+        </article>
+
+
+        <!-- TOTAL LUAS -->
+        <article class="summary-card">
+
+            <span class="summary-label">
+                Total Luas
+            </span>
+
+            <strong
+                class="summary-value"
+                id="totalLuas"
+            >
+                —
+            </strong>
+
+        </article>
+
+
+    </section>
+
+
+
+    <!-- ==================================================
+         STATUS + KELENGKAPAN
+         ================================================== -->
+
+    <section class="dashboard-grid">
+
+
+        <!-- ================= STATUS ASET ================= -->
+
+        <article class="panel">
+
+            <div class="panel-header">
+
+                <h2>
+                    Status Aset
+                </h2>
+
+            </div>
+
+
+            <div
+                class="status-list"
+                id="statusList"
+            >
+
+                <span class="loading">
+                    Memuat data...
+                </span>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- ================= KELENGKAPAN ================= -->
+
+        <article class="panel">
+
+            <div class="panel-header">
+
+                <h2>
+                    Kelengkapan Data
+                </h2>
+
+            </div>
+
+
+            <div class="completeness-layout">
+
+
+                <!-- DONUT -->
+                <div class="donut-wrapper">
+
+                    <svg
+                        class="donut-chart"
+                        viewBox="0 0 42 42"
+                        aria-label="Grafik kelengkapan data"
+                    >
+
+                        <!-- BACKGROUND -->
+                        <circle
+                            class="donut-background"
+                            cx="21"
+                            cy="21"
+                            r="15.9155"
+                        ></circle>
+
+
+                        <!-- DATA LENGKAP -->
+                        <circle
+                            id="donutLengkap"
+                            class="donut-segment donut-complete"
+                            cx="21"
+                            cy="21"
+                            r="15.9155"
+                            tabindex="0"
+                            role="button"
+                            aria-label="Lihat data lengkap pada peta"
+                        ></circle>
+
+
+                        <!-- DATA KURANG LENGKAP -->
+                        <circle
+                            id="donutKurang"
+                            class="donut-segment donut-incomplete"
+                            cx="21"
+                            cy="21"
+                            r="15.9155"
+                            tabindex="0"
+                            role="button"
+                            aria-label="Lihat data kurang lengkap pada peta"
+                        ></circle>
+
+                    </svg>
+
+
+                    <!-- TENGAH DONUT -->
+                    <div class="donut-center">
+
+                        <strong id="donutTotal">
+                            —
+                        </strong>
+
+                        <span>
+                            aset
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ================= LEGENDA ================= -->
+
+                <div class="completeness-legend">
+
+
+                    <!-- LENGKAP -->
+                    <button
+                        type="button"
+                        class="legend-row"
+                        id="legendLengkap"
+                    >
+
+                        <span
+                            class="legend-color complete-color"
+                        ></span>
+
+                        <span class="legend-text">
+
+                            <strong>
+                                Data Lengkap
+                            </strong>
+
+                            <small id="legendLengkapValue">
+                                —
+                            </small>
+
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- KURANG LENGKAP -->
+                    <button
+                        type="button"
+                        class="legend-row"
+                        id="legendKurang"
+                    >
+
+                        <span
+                            class="legend-color incomplete-color"
+                        ></span>
+
+                        <span class="legend-text">
+
+                            <strong>
+                                Data Kurang Lengkap
+                            </strong>
+
+                            <small id="legendKurangValue">
+                                —
+                            </small>
+
+                        </span>
+
+                    </button>
+
+
+                </div>
+
+            </div>
+
+
+            <p class="chart-hint">
+                Klik kategori untuk melihat hasil pada peta.
+            </p>
+
+        </article>
+
+
+    </section>
+
+
+
+    <!-- ==================================================
+         REKAP KECAMATAN
+         ================================================== -->
+
+    <section class="panel district-panel">
+
+
+        <div class="panel-header district-header">
+
+            <div>
+
+                <h2>
+                    Aset per Kecamatan
+                </h2>
+
+            </div>
+
+
+            <span class="district-note">
+                Diurutkan berdasarkan jumlah aset
+            </span>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table class="district-table">
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Kecamatan
+                        </th>
+
+                        <th class="numeric">
+                            Jumlah Aset
+                        </th>
+
+                        <th class="numeric">
+                            Luas
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="districtTableBody">
+
+                    <tr>
+
+                        <td colspan="3">
+                            Memuat data...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+
+            </table>
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- ======================================================
+     SESSION
+     ====================================================== -->
+
+<script src="js/session.js"></script>
+
+
+
+<!-- ======================================================
+     DASHBOARD JAVASCRIPT
+     ====================================================== -->
+
+<script>
+
+    /* ==================================================
+       PROTEKSI AKSES SEMENTARA
+       ================================================== */
+
+    const role = getUserRole();
+
+
+    if (!role) {
+
+        window.location.href = "index.html";
+
+    }
+
+
+    document
+        .getElementById("roleBadge")
+        .textContent = role;
+
+
+
+    /* ==================================================
+       WFS GEOSERVER
+       ================================================== */
+
+    const dashboardWfsUrl =
+        'http://localhost:8080/geoserver/bkad_cirebon/ows' +
+        '?service=WFS' +
+        '&version=2.0.0' +
+        '&request=GetFeature' +
+        '&typeNames=bkad_cirebon:aset_pemda' +
+        '&outputFormat=application/json' +
+        '&srsName=EPSG:4326' +
+        '&count=100000';
+
+
+
+    /* ==================================================
+       CEK DATA KOSONG
+       ================================================== */
+
+    function isMissing(value) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+
+            return true;
+
+        }
+
+
+        const text =
+            String(value).trim();
+
+
+        return (
+            text === "" ||
+            text === "-"
+        );
+
+    }
+
+
+
+    /* ==================================================
+       FORMAT ANGKA INDONESIA
+       ================================================== */
+
+    function formatNumber(value) {
+
+        return new Intl.NumberFormat(
+            "id-ID",
+            {
+                maximumFractionDigits: 2
+            }
+        ).format(value);
+
+    }
+
+
+
+    /* ==================================================
+       BUKA FILTER KELENGKAPAN DI PETA
+       ================================================== */
+
+    function openCompletenessOnMap(type) {
+
+        sessionStorage.setItem(
+            "webgis_completeness_filter",
+            type
+        );
+
+        window.location.href =
+            "map.html";
+
+    }
+
+
+
+    /* ==================================================
+       LOAD DATA
+       ================================================== */
+
+    fetch(dashboardWfsUrl)
+
+        .then(response => {
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Gagal mengambil data dari GeoServer."
+                );
+
+            }
+
+            return response.json();
+
+        })
+
+
+        .then(data => {
+
+
+            /* ==========================================
+               VALIDASI FEATURE
+               ========================================== */
+
+            if (
+                !data ||
+                !Array.isArray(data.features)
+            ) {
+
+                throw new Error(
+                    "Format data GeoServer tidak sesuai."
+                );
+
+            }
+
+
+            const features =
+                data.features;
+
+
+            const total =
+                features.length;
+
+
+
+            /* ==========================================
+               VARIABEL PERHITUNGAN
+               ========================================== */
+
+            let lengkap = 0;
+
+            let kurang = 0;
+
+            let luas = 0;
+
+
+            const statusCounts = {};
+
+            const districtCounts = {};
+
+
+
+            /* ==========================================
+               8 FIELD WAJIB
+               ========================================== */
+
+            const requiredFields = [
+
+                "id_barang",
+                "penggunaan",
+                "nub",
+                "luas_m2",
+                "kecamatan",
+                "desa",
+                "status",
+                "keterangan"
+
+            ];
+
+
+
+            /* ==========================================
+               LOOP SELURUH ASET
+               ========================================== */
+
+            features.forEach(feature => {
+
+
+                const p =
+                    feature.properties || {};
+
+
+
+                /* ======================================
+                   LUAS
+                   ====================================== */
+
+                const nilaiLuas =
+                    Number(p.luas_m2);
+
+
+                if (
+                    Number.isFinite(nilaiLuas)
+                ) {
+
+                    luas += nilaiLuas;
+
+                }
+
+
+
+                /* ======================================
+                   KELENGKAPAN DATA
+                   ====================================== */
+
+                const missingFields =
+                    requiredFields.filter(
+                        field =>
+                            isMissing(p[field])
+                    );
+
+
+                if (
+                    missingFields.length === 0
+                ) {
+
+                    lengkap++;
+
+                }
+
+                else {
+
+                    kurang++;
+
+                }
+
+
+
+                /* ======================================
+                   STATUS
+                   ====================================== */
+
+                const status =
+                    isMissing(p.status)
+                        ? "Tidak diketahui"
+                        : String(p.status).trim();
+
+
+                statusCounts[status] =
+                    (statusCounts[status] || 0) + 1;
+
+
+
+                /* ======================================
+                   REKAP KECAMATAN
+                   ====================================== */
+
+                const kecamatan =
+                    isMissing(p.kecamatan)
+                        ? "Tidak diketahui"
+                        : String(p.kecamatan).trim();
+
+
+                if (
+                    !districtCounts[kecamatan]
+                ) {
+
+                    districtCounts[kecamatan] = {
+
+                        count: 0,
+                        luas: 0
+
+                    };
+
+                }
+
+
+                districtCounts[kecamatan].count++;
+
+
+                if (
+                    Number.isFinite(nilaiLuas)
+                ) {
+
+                    districtCounts[kecamatan].luas +=
+                        nilaiLuas;
+
+                }
+
+
+            });
+
+
+
+            /* ==================================================
+               SUMMARY
+               ================================================== */
+
+            document
+                .getElementById("totalAset")
+                .textContent =
+                    formatNumber(total);
+
+
+            document
+                .getElementById("totalLuas")
+                .textContent =
+                    formatNumber(luas) + " m²";
+
+
+
+            /* ==================================================
+               DONUT KELENGKAPAN
+               ================================================== */
+
+            const persenLengkap =
+                total > 0
+                    ? (lengkap / total) * 100
+                    : 0;
+
+
+            const persenKurang =
+                total > 0
+                    ? (kurang / total) * 100
+                    : 0;
+
+
+
+            const lengkapCircle =
+                document.getElementById(
+                    "donutLengkap"
+                );
+
+
+            const kurangCircle =
+                document.getElementById(
+                    "donutKurang"
+                );
+
+
+
+            lengkapCircle.style.strokeDasharray =
+                `${persenLengkap} ${100 - persenLengkap}`;
+
+
+            lengkapCircle.style.strokeDashoffset =
+                "0";
+
+
+            kurangCircle.style.strokeDasharray =
+                `${persenKurang} ${100 - persenKurang}`;
+
+
+            kurangCircle.style.strokeDashoffset =
+                `-${persenLengkap}`;
+
+
+
+            document
+                .getElementById("donutTotal")
+                .textContent =
+                    formatNumber(total);
+
+
+
+            document
+                .getElementById("legendLengkapValue")
+                .textContent =
+                    `${formatNumber(lengkap)} aset · ` +
+                    `${formatNumber(persenLengkap)}%`;
+
+
+
+            document
+                .getElementById("legendKurangValue")
+                .textContent =
+                    `${formatNumber(kurang)} aset · ` +
+                    `${formatNumber(persenKurang)}%`;
+
+
+
+            /* ==================================================
+               INTERAKSI DONUT → PETA
+               ================================================== */
+
+            lengkapCircle.addEventListener(
+                "click",
+                () =>
+                    openCompletenessOnMap(
+                        "lengkap"
+                    )
+            );
+
+
+            kurangCircle.addEventListener(
+                "click",
+                () =>
+                    openCompletenessOnMap(
+                        "kurang"
+                    )
+            );
+
+
+            lengkapCircle.addEventListener(
+                "keydown",
+                event => {
+
+                    if (
+                        event.key === "Enter" ||
+                        event.key === " "
+                    ) {
+
+                        openCompletenessOnMap(
+                            "lengkap"
+                        );
+
+                    }
+
+                }
+            );
+
+
+            kurangCircle.addEventListener(
+                "keydown",
+                event => {
+
+                    if (
+                        event.key === "Enter" ||
+                        event.key === " "
+                    ) {
+
+                        openCompletenessOnMap(
+                            "kurang"
+                        );
+
+                    }
+
+                }
+            );
+
+
+            document
+                .getElementById("legendLengkap")
+                .addEventListener(
+                    "click",
+                    () =>
+                        openCompletenessOnMap(
+                            "lengkap"
+                        )
+                );
+
+
+            document
+                .getElementById("legendKurang")
+                .addEventListener(
+                    "click",
+                    () =>
+                        openCompletenessOnMap(
+                            "kurang"
+                        )
+                );
+
+
+
+            /* ==================================================
+               STATUS ASET
+               ================================================== */
+
+            const statusList =
+                document.getElementById(
+                    "statusList"
+                );
+
+
+            statusList.innerHTML = "";
+
+
+            Object
+                .entries(statusCounts)
+
+                .sort(
+                    (a, b) =>
+                        b[1] - a[1]
+                )
+
+                .forEach(
+                    ([status, count]) => {
+
+
+                        const item =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        item.className =
+                            "status-item";
+
+
+
+                        const statusName =
+                            document.createElement(
+                                "span"
+                            );
+
+
+                        statusName.className =
+                            "status-name";
+
+
+                        statusName.textContent =
+                            status;
+
+
+
+                        const statusCount =
+                            document.createElement(
+                                "span"
+                            );
+
+
+                        statusCount.className =
+                            "status-count";
+
+
+                        statusCount.textContent =
+                            formatNumber(count);
+
+
+
+                        item.appendChild(
+                            statusName
+                        );
+
+
+                        item.appendChild(
+                            statusCount
+                        );
+
+
+                        statusList.appendChild(
+                            item
+                        );
+
+
+                    }
+                );
+
+
+
+            /* ==================================================
+               TABEL KECAMATAN
+               ================================================== */
+
+            const districtTableBody =
+                document.getElementById(
+                    "districtTableBody"
+                );
+
+
+            districtTableBody.innerHTML =
+                "";
+
+
+            Object
+                .entries(districtCounts)
+
+                .sort(
+                    (a, b) =>
+                        b[1].count -
+                        a[1].count
+                )
+
+                .forEach(
+                    ([kecamatan, info]) => {
+
+
+                        const row =
+                            document.createElement(
+                                "tr"
+                            );
+
+
+
+                        const cellKecamatan =
+                            document.createElement(
+                                "td"
+                            );
+
+
+                        cellKecamatan.textContent =
+                            kecamatan;
+
+
+
+                        const cellJumlah =
+                            document.createElement(
+                                "td"
+                            );
+
+
+                        cellJumlah.className =
+                            "numeric";
+
+
+                        cellJumlah.textContent =
+                            formatNumber(
+                                info.count
+                            );
+
+
+
+                        const cellLuas =
+                            document.createElement(
+                                "td"
+                            );
+
+
+                        cellLuas.className =
+                            "numeric";
+
+
+                        cellLuas.textContent =
+                            formatNumber(
+                                info.luas
+                            ) + " m²";
+
+
+
+                        row.appendChild(
+                            cellKecamatan
+                        );
+
+
+                        row.appendChild(
+                            cellJumlah
+                        );
+
+
+                        row.appendChild(
+                            cellLuas
+                        );
+
+
+                        districtTableBody
+                            .appendChild(row);
+
+
+                    }
+                );
+
+
+        })
+
+
+        /* ==================================================
+           ERROR HANDLING
+           ================================================== */
+
+        .catch(error => {
+
+
+            console.error(
+                "Dashboard Error:",
+                error
+            );
+
+
+            document
+                .getElementById("totalAset")
+                .textContent =
+                    "—";
+
+
+            document
+                .getElementById("totalLuas")
+                .textContent =
+                    "—";
+
+
+            document
+                .getElementById("statusList")
+                .innerHTML =
+                    '<span class="loading">' +
+                    'Data tidak dapat dimuat.' +
+                    '</span>';
+
+
+            document
+                .getElementById(
+                    "districtTableBody"
+                )
+                .innerHTML =
+                    '<tr>' +
+                    '<td colspan="3">' +
+                    'Data tidak dapat dimuat.' +
+                    '</td>' +
+                    '</tr>';
+
+
+        });
+
+</script>
+
+<footer class="site-footer">
+
+    <div class="site-footer-inner">
+
+        <span class="footer-left">
+            © 2026 BKAD Kabupaten Cirebon
+        </span>
+
+        <span class="footer-right">
+            Rame ing gawe, sepi ing pamrih
+        </span>
+
+    </div>
+
+</footer>
+
+</body>
+
+</html>

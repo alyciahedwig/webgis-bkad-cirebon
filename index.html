@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>WebGIS Aset Daerah Kabupaten Cirebon</title>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="css/landing.css">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <header class="navbar">
+
+        <a href="#beranda" class="brand">
+
+            <img
+                src="assets/img/logokabcirebon.jpg"
+                alt="Logo Kabupaten Cirebon"
+                class="brand-logo"
+            >
+
+            <div class="brand-text">
+                <span class="brand-title">
+                    BKAD Kabupaten Cirebon
+                </span>
+
+                <span class="brand-subtitle">
+                    Basis Data Spasial Tanah Aset
+                </span>
+            </div>
+
+        </a>
+
+        <nav class="nav-menu">
+             <a href="#" onclick="openBeranda(event)">Beranda</a>
+            <a href="#tentang">Tentang Sistem</a>
+        </nav>
+        
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+    <main class="hero" id="beranda">
+
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+
+            <h1>
+                Sistem Informasi Geospasial
+                <span>Aset Pemerintah Daerah Kabupaten Cirebon</span>
+            </h1>
+
+            <p class="hero-description">
+                Menyajikan informasi aset daerah Kabupaten Cirebon
+                yang mudah diakses untuk mendukung pemetaan,
+                penelusuran data, serta analisis spasial.
+            </p>
+
+
+            <!-- PILIHAN AKSES -->
+            <div class="access-area" id="accessArea">
+
+    <!-- GUEST -->
+    <a
+        href="#"
+        class="access-button guest-access"
+        onclick="enterAsGuest(); return false;"
+        aria-label="View as Guest"
+    >
+
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+                d="M12 5C6.5 5 2.1 9.2 1 12c1.1 2.8 5.5 7 11 7s9.9-4.2 11-7c-1.1-2.8-5.5-7-11-7zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0-2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"
+            />
+        </svg>
+
+        <span class="access-tooltip">
+            <strong>View as Guest</strong>
+            <small>Lihat peta dan informasi aset</small>
+        </span>
+
+    </a>
+
+    
+<!-- ADMIN -->
+<a
+    href="login.html"
+    class="access-button admin-access"
+    aria-label="Login as Admin"
+>
+
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M17 8V6a5 5 0 0 0-10 0v2H5v13h14V8h-2zm-8-2a3 3 0 1 1 6 0v2H9V6zm4 9.73V18h-2v-2.27a2 2 0 1 1 2 0z"/>
+    </svg>
+
+    <span class="access-tooltip">
+        <strong>Login as Admin</strong>
+        <small>Masuk ke akses pengelolaan sistem</small>
+    </span>
+
+</a>
+
+</div>
+
+<div class="access-hint" id="accessHint">
+
+                Pilih akses untuk masuk ke sistem
+            </div>
+
+        </div>
+
+
+        <a
+            href="#tentang"
+            class="scroll-indicator"
+            aria-label="Lihat Tentang Sistem"
+        >
+            <span></span>
+        </a>
+
+    </main>
+
+
+    <!-- ================= TENTANG SISTEM ================= -->
+    <section class="about" id="tentang">
+
+        <div class="about-heading">
+
+            <span class="section-label">
+                TENTANG SISTEM
+            </span>
+
+            <h2>
+                Basis informasi spasial aset daerah Kabupaten Cirebon.
+            </h2>
+
+        </div>
+
+
+        <div class="about-content">
+
+            <p>
+                WebGIS BKAD Kabupaten Cirebon digunakan untuk menyajikan
+                lokasi dan informasi tanah aset daerah dalam satu sistem
+                berbasis peta.
+            </p>
+
+            <div class="about-points">
+
+                <div class="about-item">
+                    <span>01</span>
+                    <div>
+                        <strong>Informasi Aset</strong>
+                        <p>
+                            Menampilkan data spasial dan atribut bidang
+                            tanah aset daerah.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="about-item">
+                    <span>02</span>
+                    <div>
+                        <strong>Penelusuran Data</strong>
+                        <p>
+                            Memudahkan pencarian aset berdasarkan lokasi
+                            maupun informasi bidang.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="about-item">
+                    <span>03</span>
+                    <div>
+                        <strong>Fungsi Spasial</strong>
+                        <p>
+                            Mendukung pengamatan hubungan lokasi,
+                            radius, statistik, dan jarak antar-aset.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer">
+
+        <div class="footer-brand">
+            <strong>BKAD Kabupaten Cirebon</strong>
+            <span>Basis Data Spasial Tanah Aset</span>
+        </div>
+
+        <p>
+            © 2026 BKAD Kabupaten Cirebon
+        </p>
+
+    </footer>
+
+
+    <script src="js/session.js"></script>
+
+<script>
+
+    function showAdminNotice() {
+        alert('Halaman Login Admin akan dibuat pada tahap berikutnya.');
+    }
+
+
+    function openBeranda(event) {
+
+        event.preventDefault();
+
+        const role = getUserRole();
+
+        /*
+        Jika sebelumnya sudah masuk sebagai
+        Guest/Admin dalam sesi browser ini,
+        Beranda boleh dibuka.
+        */
+
+        if (role === "guest" || role === "admin") {
+            window.location.href = "beranda.html";
+            return;
+        }
+
+
+        /*
+        Jika belum memilih akses,
+        arahkan perhatian ke Guest/Admin.
+        */
+
+        const accessArea =
+            document.getElementById("accessArea");
+
+        const accessHint =
+            document.getElementById("accessHint");
+
+
+        accessArea.classList.remove("access-attention");
+
+        void accessArea.offsetWidth;
+
+        accessArea.classList.add("access-attention");
+
+
+        accessHint.textContent =
+            "Pilih View as Guest atau Login as Admin terlebih dahulu.";
+
+        accessHint.classList.add("attention");
+
+
+        setTimeout(() => {
+
+            accessHint.textContent =
+                "Pilih akses untuk masuk ke sistem";
+
+            accessHint.classList.remove("attention");
+
+            accessArea.classList.remove("access-attention");
+
+        }, 3000);
+    }
+
+</script>
+
+</body>
+</html>

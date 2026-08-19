@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Alat Analisis - WebGIS BKAD Kabupaten Cirebon
+    </title>
+
+
+    <!-- FONT -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- LEAFLET -->
+
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+
+    <!-- CSS -->
+
+    <link
+        rel="stylesheet"
+        href="css/alat.css?v=1"
+    >
+
+    <link
+    rel="stylesheet"
+    href="css/footer.css?v=1"
+>
+
+</head>
+
+
+<body>
+
+
+<div class="tool-page">
+
+
+    <!-- ==================================================
+         NAVBAR
+         ================================================== -->
+
+    <header class="app-navbar">
+
+
+        <a
+            href="beranda.html"
+            class="app-brand"
+        >
+
+            <img
+                src="assets/img/logokabcirebon.jpg"
+                alt="Logo Kabupaten Cirebon"
+            >
+
+
+            <div class="brand-info">
+
+                <strong>
+                    BKAD Kabupaten Cirebon
+                </strong>
+
+                <span>
+                    Basis Data Spasial Tanah Aset
+                </span>
+
+            </div>
+
+        </a>
+
+
+
+        <nav class="app-menu">
+
+            <a href="beranda.html">
+                Beranda
+            </a>
+
+            <a href="map.html">
+                Peta
+            </a>
+
+            <a href="data-aset.html">
+                Data Aset
+            </a>
+
+            <a
+                href="alat.html"
+                class="active"
+            >
+                Alat
+            </a>
+
+            <a href="tentang.html">
+    Tentang
+</a>
+
+        </nav>
+
+
+
+        <div class="user-area">
+
+            <span
+                class="role-badge"
+                id="roleBadge"
+            >
+                Guest
+            </span>
+
+
+            <button
+                type="button"
+                class="logout-button"
+                onclick="logoutWebGIS()"
+            >
+                Keluar
+            </button>
+
+        </div>
+
+
+    </header>
+
+
+
+    <!-- ==================================================
+         MAIN
+         ================================================== -->
+
+    <main class="tool-main">
+
+
+        <!-- PAGE HEADER -->
+
+        <section class="page-head">
+
+
+            <div>
+
+                <span class="eyebrow">
+                    ALAT ANALISIS
+                </span>
+
+                <h1>
+                    Analisis Spasial Aset
+                </h1>
+
+
+            </div>
+
+
+
+            <div class="page-actions">
+
+                <span
+                    class="data-status"
+                    id="dataStatus"
+                >
+                    Menyiapkan data aset...
+                </span>
+
+
+                <button
+                    type="button"
+                    class="reset-all-button"
+                    id="resetAllButton"
+                >
+                    Reset Analisis
+                </button>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ==================================================
+             ANALYSIS LAYOUT
+             ================================================== -->
+
+        <section class="analysis-shell">
+
+
+            <!-- ==================================================
+                 SIDEBAR
+                 ================================================== -->
+
+            <aside class="tool-sidebar">
+
+
+                <!-- PILIHAN ALAT -->
+
+                <div
+                    class="tool-tabs"
+                    aria-label="Pilihan alat analisis"
+                >
+
+
+                    <button
+                        type="button"
+                        class="tool-tab active"
+                        data-tool="radius"
+                    >
+
+                        <span class="tab-number">
+                            01
+                        </span>
+
+                        <span>
+
+                            <strong>
+                                Analisis Radius Aset
+                            </strong>
+
+                            <small>
+                                Mencari aset di sekitar bidang
+                            </small>
+
+                        </span>
+
+                    </button>
+
+
+
+                    <button
+                        type="button"
+                        class="tool-tab"
+                        data-tool="statistik"
+                    >
+
+                        <span class="tab-number">
+                            02
+                        </span>
+
+                        <span>
+
+                            <strong>
+                                Statistik dalam Radius
+                            </strong>
+
+                            <small>
+                                Ringkasan hasil analisis radius
+                            </small>
+
+                        </span>
+
+                    </button>
+
+
+
+                    <button
+                        type="button"
+                        class="tool-tab"
+                        data-tool="jarak"
+                    >
+
+                        <span class="tab-number">
+                            03
+                        </span>
+
+                        <span>
+
+                            <strong>
+                                Jarak Antar-Aset
+                            </strong>
+
+                            <small>
+                                Jarak terpendek batas dua bidang
+                            </small>
+
+                        </span>
+
+                    </button>
+
+
+                </div>
+
+
+
+                <!-- ==================================================
+                     PANEL
+                     ================================================== -->
+
+                <div class="panel-wrap">
+
+
+                    <!-- ==============================================
+                         01 RADIUS
+                         ============================================== -->
+
+                    <section
+                        class="tool-panel"
+                        data-panel="radius"
+                    >
+
+
+                        <div class="panel-heading">
+
+                            <span class="panel-kicker">
+                                ANALISIS 01
+                            </span>
+
+                            <h2>
+                                Analisis Radius Aset
+                            </h2>
+
+                            <p>
+                                Pilih aset pusat, tentukan radius,
+                                lalu jalankan analisis.
+                            </p>
+
+                        </div>
+
+
+
+                        <div class="field-group">
+
+                            <label for="radiusAsset">
+                                Aset pusat
+                            </label>
+
+
+                            <select id="radiusAsset">
+
+                                <option value="">
+                                    Pilih aset pusat...
+                                </option>
+
+                            </select>
+
+
+                            <small class="field-help">
+                                Bisa juga memilih langsung dengan klik bidang pada peta.
+                            </small>
+
+                        </div>
+
+
+
+                        <div class="field-group">
+
+                            <label for="radiusMeters">
+                                Radius analisis
+                            </label>
+
+
+                            <div class="unit-input">
+
+                                <input
+                                    id="radiusMeters"
+                                    type="number"
+                                    min="1"
+                                    max="10000"
+                                    step="1"
+                                    value="100"
+                                >
+
+                                <span>
+                                    meter
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- QUICK RADIUS -->
+
+                        <div class="quick-radius">
+
+                            <button
+                                type="button"
+                                data-radius="50"
+                            >
+                                50 m
+                            </button>
+
+                            <button
+                                type="button"
+                                data-radius="100"
+                            >
+                                100 m
+                            </button>
+
+                            <button
+                                type="button"
+                                data-radius="250"
+                            >
+                                250 m
+                            </button>
+
+                            <button
+                                type="button"
+                                data-radius="500"
+                            >
+                                500 m
+                            </button>
+
+                        </div>
+
+
+
+                        <div class="panel-actions">
+
+                            <button
+                                type="button"
+                                class="secondary-button"
+                                id="resetRadiusButton"
+                            >
+                                Reset
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="primary-button"
+                                id="runRadiusButton"
+                            >
+                                Jalankan Analisis
+                            </button>
+
+                        </div>
+
+
+
+                        <!-- RESULT -->
+
+                        <div
+                            class="result-card"
+                            id="radiusResultCard"
+                            hidden
+                        >
+
+                            <span class="result-label">
+                                HASIL RADIUS
+                            </span>
+
+
+                            <div
+                                class="result-highlight"
+                                id="radiusResultCount"
+                            >
+                                0 aset
+                            </div>
+
+
+                            <p id="radiusResultText">
+                                —
+                            </p>
+
+
+                            <div
+                                class="radius-result-list"
+                                id="radiusResultList"
+                            ></div>
+
+                        </div>
+
+
+                    </section>
+
+
+
+                    <!-- ==============================================
+                         02 STATISTIK
+                         ============================================== -->
+
+                    <section
+                        class="tool-panel"
+                        data-panel="statistik"
+                        hidden
+                    >
+
+
+                        <div class="panel-heading">
+
+                            <span class="panel-kicker">
+                                ANALISIS 02
+                            </span>
+
+                            <h2>
+                                Statistik dalam Radius
+                            </h2>
+
+                            <p>
+                                Statistik otomatis dari hasil
+                                Analisis Radius Aset terakhir.
+                            </p>
+
+                        </div>
+
+
+
+                        <!-- BELUM ADA ANALISIS -->
+
+                        <div
+                            class="stat-empty"
+                            id="statEmpty"
+                        >
+
+                            <div class="empty-icon">
+                                ◎
+                            </div>
+
+
+                            <strong>
+                                Belum ada hasil radius
+                            </strong>
+
+
+                            <p>
+                                Jalankan Analisis Radius Aset terlebih dahulu
+                                untuk menghasilkan statistik.
+                            </p>
+
+
+                            <button
+                                type="button"
+                                class="primary-button"
+                                id="openRadiusToolButton"
+                            >
+                                Buka Analisis Radius
+                            </button>
+
+                        </div>
+
+
+
+                        <!-- STATISTIK -->
+
+                        <div
+                            class="stat-content"
+                            id="statContent"
+                            hidden
+                        >
+
+
+                            <div class="stat-grid">
+
+
+                                <div class="stat-card">
+
+                                    <span>
+                                        Jumlah Aset
+                                    </span>
+
+                                    <strong id="statCount">
+                                        0
+                                    </strong>
+
+                                </div>
+
+
+
+                                <div class="stat-card">
+
+                                    <span>
+                                        Total Luas
+                                    </span>
+
+                                    <strong id="statArea">
+                                        0 m²
+                                    </strong>
+
+                                </div>
+
+
+
+                                <div class="stat-card">
+
+                                    <span>
+                                        Penggunaan Dominan
+                                    </span>
+
+                                    <strong id="statDominant">
+                                        —
+                                    </strong>
+
+                                </div>
+
+
+
+                                <div class="stat-card">
+
+                                    <span>
+                                        Radius
+                                    </span>
+
+                                    <strong id="statRadius">
+                                        —
+                                    </strong>
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <div class="breakdown-card">
+
+
+                                <div class="breakdown-title">
+
+                                    <span>
+                                        Komposisi Penggunaan
+                                    </span>
+
+                                    <small>
+                                        Berdasarkan jumlah bidang
+                                    </small>
+
+                                </div>
+
+
+                                <div id="statBreakdown"></div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </section>
+
+
+
+                    <!-- ==============================================
+                         03 JARAK ANTAR ASET
+                         ============================================== -->
+
+                    <section
+                        class="tool-panel"
+                        data-panel="jarak"
+                        hidden
+                    >
+
+
+                        <div class="panel-heading">
+
+                            <span class="panel-kicker">
+                                ANALISIS 03
+                            </span>
+
+                            <h2>
+                                Jarak Antar-Aset
+                            </h2>
+
+                            <p>
+                                Pilih dua bidang untuk menghitung
+                                jarak terpendek antar-batas polygon.
+                            </p>
+
+                        </div>
+
+
+
+                        <div class="selection-label selection-a">
+                            ASET A
+                        </div>
+
+
+                        <div class="field-group">
+
+                            <label for="distanceAssetA">
+                                Bidang pertama
+                            </label>
+
+
+                            <select id="distanceAssetA">
+
+                                <option value="">
+                                    Pilih Aset A...
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <div class="selection-label selection-b">
+                            ASET B
+                        </div>
+
+
+                        <div class="field-group">
+
+                            <label for="distanceAssetB">
+                                Bidang kedua
+                            </label>
+
+
+                            <select id="distanceAssetB">
+
+                                <option value="">
+                                    Pilih Aset B...
+                                </option>
+
+                            </select>
+
+
+                            <small class="field-help">
+                                Pada mode ini, bidang juga dapat dipilih
+                                berurutan langsung dari peta.
+                            </small>
+
+                        </div>
+
+
+
+                        <div class="panel-actions">
+
+                            <button
+                                type="button"
+                                class="secondary-button"
+                                id="resetDistanceButton"
+                            >
+                                Reset
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="primary-button"
+                                id="runDistanceButton"
+                            >
+                                Hitung Jarak
+                            </button>
+
+                        </div>
+
+
+
+                        <div
+                            class="result-card distance-result"
+                            id="distanceResultCard"
+                            hidden
+                        >
+
+                            <span class="result-label">
+                                JARAK TERPENDEK
+                            </span>
+
+
+                            <div
+                                class="result-highlight"
+                                id="distanceValue"
+                            >
+                                —
+                            </div>
+
+
+                            <p id="distanceDescription">
+                                —
+                            </p>
+
+                        </div>
+
+
+                    </section>
+
+
+                </div>
+
+
+            </aside>
+
+
+
+            <!-- ==================================================
+                 MAP
+                 ================================================== -->
+
+            <section class="map-column">
+
+
+                <div class="map-head">
+
+
+                    <div>
+
+                        <strong>
+                            Peta Analisis
+                        </strong>
+
+                        <span>
+                            Klik bidang untuk memilih aset sesuai alat yang sedang aktif.
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="map-legend-inline">
+
+
+                        <span>
+
+                            <i class="legend-dot center"></i>
+
+                            Pusat / Aset A
+
+                        </span>
+
+
+                        <span>
+
+                            <i class="legend-dot result"></i>
+
+                            Hasil radius
+
+                        </span>
+
+
+                        <span>
+
+                            <i class="legend-dot second"></i>
+
+                            Aset B
+
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="map-frame">
+
+
+                    <div id="analysisMap"></div>
+
+
+                    <div class="map-note">
+
+                        <strong>
+                            Petunjuk
+                        </strong>
+
+                        <span>
+                            Radius dihitung dari bidang aset terpilih.
+                            Statistik menggunakan hasil radius terakhir.
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- ======================================================
+     LOADING
+     ====================================================== -->
+
+<div
+    class="loading-overlay"
+    id="loadingOverlay"
+    hidden
+>
+
+    <div class="loading-box">
+
+        <div class="spinner"></div>
+
+        <strong id="loadingText">
+            Memuat data aset...
+        </strong>
+
+    </div>
+
+</div>
+
+
+
+<!-- LEAFLET -->
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+
+<!-- TURF -->
+
+<script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script>
+
+
+<!-- SESSION -->
+
+<script src="js/session.js"></script>
+
+
+<!-- ALAT -->
+
+<script src="js/alat.js?v=1"></script>
+
+
+
+<!-- QUICK RADIUS -->
+
+<script>
+
+    document
+        .querySelectorAll("[data-radius]")
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        document
+                            .getElementById("radiusMeters")
+                            .value =
+                                button.dataset.radius;
+
+                    }
+                );
+
+            }
+        );
+
+</script>
+
+<footer class="site-footer">
+
+    <div class="site-footer-inner">
+
+        <span class="footer-left">
+            © 2026 BKAD Kabupaten Cirebon
+        </span>
+
+        <span class="footer-right">
+            Rame ing gawe, sepi ing pamrih
+        </span>
+
+    </div>
+
+</footer>
+
+</body>
+
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Login Admin - WebGIS BKAD Kabupaten Cirebon
+    </title>
+
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <link
+        rel="stylesheet"
+        href="css/login.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<div class="login-page">
+
+
+    <!-- ================= VISUAL ================= -->
+
+<section class="login-visual">
+
+    <div class="login-visual-navbar">
+
+        <a href="index.html" class="login-brand">
+
+            <img
+                src="assets/img/logokabcirebon.jpg"
+                alt="Logo Kabupaten Cirebon"
+            >
+
+            <div class="login-brand-text">
+                <strong>BKAD Kabupaten Cirebon</strong>
+                <span>Basis Data Spasial Tanah Aset</span>
+            </div>
+
+        </a>
+
+    </div>
+
+</section>
+
+    <!-- ================= FORM ================= -->
+
+    <section class="login-panel">
+
+
+        <div class="login-form-wrapper">
+
+
+            <span class="login-label">
+    LOGIN ADMIN
+</span>
+
+<p class="login-description">
+    Masukkan akun administrator anda untuk
+    melanjutkan ke sistem pengelolaan data.
+</p>
+
+
+
+            <form
+                id="adminLoginForm"
+                autocomplete="off"
+            >
+
+
+                <div class="form-group">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Masukkan username"
+                            autocomplete="username"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Masukkan password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <button
+                    type="submit"
+                    class="login-button"
+                >
+                    Masuk
+                </button>
+
+
+            </form>
+
+
+            <a
+                href="index.html"
+                class="back-link"
+            >
+                ← Kembali ke halaman awal
+            </a>
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+<script>
+
+    /*
+       Autentikasi sebenarnya belum dipasang.
+       Form sengaja belum mengirim username/password
+       ke mana pun.
+    */
+
+    
+
+</script>
+
+<script src="js/session.js?v=2"></script>
+<script src="js/login.js?v=2"></script>
+
+</body>
+
+</html>
