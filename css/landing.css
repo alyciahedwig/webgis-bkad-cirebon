@@ -757,3 +757,65 @@ body {
         align-items: flex-start;
     }
 }
+
+/* ======================================================
+   FOOTER LANDING PAGE
+   ====================================================== */
+
+.site-footer {
+    width: 100%;
+    background: #0b1f33;
+    color: #ffffff;
+}
+
+.site-footer-inner {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 24px;
+
+    padding: 22px 48px;
+
+    box-sizing: border-box;
+}
+
+.footer-left,
+.footer-right {
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.footer-left {
+    font-weight: 600;
+}
+
+.footer-right {
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.78);
+}
+
+
+/* ======================================================
+   MOBILE
+   ====================================================== */
+
+@media (max-width: 700px) {
+
+    .site-footer-inner {
+        padding: 18px 20px;
+
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 6px;
+    }
+
+    .footer-left,
+    .footer-right {
+        font-size: 13px;
+    }
+
+}
