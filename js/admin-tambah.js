@@ -193,6 +193,18 @@ const IMPORT_API =
 
         ? "api/tambah-aset.php"
 
+        : "/api/import-aset";
+
+    (
+        window.location.hostname ===
+            "localhost" ||
+
+        window.location.hostname ===
+            "127.0.0.1"
+    )
+
+        ? "api/tambah-aset.php"
+
         : "/api/tambah-aset";
 
 
