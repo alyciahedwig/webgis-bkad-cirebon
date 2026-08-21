@@ -171,6 +171,29 @@
     const IMPORT_BATCH_SIZE =
         100;
 
+    /* ======================================================
+   IMPORT API
+
+   Localhost:
+   tetap menggunakan PHP + PostGIS.
+
+   Production Vercel:
+   menggunakan Vercel Function + GitHub GeoJSON.
+   ====================================================== */
+
+const IMPORT_API =
+
+    (
+        window.location.hostname ===
+            "localhost" ||
+
+        window.location.hostname ===
+            "127.0.0.1"
+    )
+
+        ? "api/tambah-aset.php"
+
+        : "/api/tambah-aset";
 
 
     const mappingConfig = [
@@ -1565,7 +1588,7 @@
 
         const response =
             await fetch(
-                "api/tambah-aset.php",
+                IMPORT_API,
                 {
                     method:
                         "POST",
